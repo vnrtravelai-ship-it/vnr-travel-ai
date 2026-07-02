@@ -1,0 +1,289 @@
+{
+  "entities": {
+    "UserProfilePublic": {
+      "title": "UserProfilePublic",
+      "description": "Profile details of a member in the VNR Railway Enthusiast community.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Uniquely maps to the Firebase Authentication UID."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Public display name of the member."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the member."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "member", "admin"]
+        },
+        "premium": {
+          "type": "boolean",
+          "description": "Whether the user is a Premium subscriber."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "displayName", "email", "role", "premium", "createdAt"]
+    },
+    "UserProfilePrivate": {
+      "title": "UserProfilePrivate",
+      "description": "Private contact details and PII isolated securely from public view.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "emailVerified": {
+          "type": "boolean"
+        },
+        "marketingConsent": {
+          "type": "boolean",
+          "description": "Determines if user consented to marketing emails/SMS digests."
+        },
+        "notes": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "email", "phoneNumber", "emailVerified", "marketingConsent", "updatedAt"]
+    },
+    "Itinerary": {
+      "title": "Itinerary",
+      "description": "AI-generated railway travel schedule planned utilizing Google Gemini API.",
+      "type": "object",
+      "properties": {
+        "itineraryId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "departure": {
+          "type": "string"
+        },
+        "arrival": {
+          "type": "string"
+        },
+        "daysCount": {
+          "type": "integer"
+        },
+        "budgetLevel": {
+          "type": "string"
+        },
+        "travelStyle": {
+          "type": "string"
+        },
+        "companion": {
+          "type": "string"
+        },
+        "rawAIResult": {
+          "type": "object",
+          "description": "Detailed raw JSON response tree returned from the model."
+        },
+        "totalEstimatedCostVnd": {
+          "type": "integer"
+        },
+        "creatorId": {
+          "type": "string",
+          "description": "Firebase UID of user who generated this plan (or 'anonymous' if guest)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["itineraryId", "title", "summary", "departure", "arrival", "daysCount", "totalEstimatedCostVnd", "creatorId", "createdAt"]
+    },
+    "AffiliateClickLog": {
+      "title": "AffiliateClickLog",
+      "description": "Event logging when a traveler clicks affiliate links to ticket or hotel partners.",
+      "type": "object",
+      "properties": {
+        "clickId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string",
+          "description": "UID if logged in, or 'guest' if anonymous."
+        },
+        "itineraryId": {
+          "type": "string",
+          "description": "Reference ID of the itinerary where click happened."
+        },
+        "provider": {
+          "type": "string",
+          "enum": ["baolau", "12go", "agoda", "booking", "klook"]
+        },
+        "targetUrl": {
+          "type": "string"
+        },
+        "affiliateIdUsed": {
+          "type": "string"
+        },
+        "utmSource": {
+          "type": "string"
+        },
+        "utmMedium": {
+          "type": "string"
+        },
+        "utmCampaign": {
+          "type": "string"
+        },
+        "deviceType": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["clickId", "userId", "provider", "targetUrl", "affiliateIdUsed", "createdAt"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "User comments on community travel posts.",
+      "type": "object",
+      "properties": {
+        "commentId": {
+          "type": "string"
+        },
+        "postId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["commentId", "postId", "userId", "displayName", "content", "createdAt"]
+    },
+    "Like": {
+      "title": "Like",
+      "description": "Like record tracking user reaction representing unlike/like state on community posts.",
+      "type": "object",
+      "properties": {
+        "likeId": {
+          "type": "string"
+        },
+        "postId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["likeId", "postId", "userId", "createdAt"]
+    },
+    "CommunityPost": {
+      "title": "CommunityPost",
+      "description": "Post sharing reviews, photos or tips from train enthusiasts.",
+      "type": "object",
+      "properties": {
+        "postId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string",
+          "description": "UID of the author who created this post."
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "authorRole": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "imageUrls": {
+          "type": "array"
+        },
+        "trainRoute": {
+          "type": "string",
+          "description": "Relevant railway route (e.g., 'Da Nang - Hue')"
+        },
+        "likesCount": {
+          "type": "integer"
+        },
+        "commentsCount": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["postId", "userId", "displayName", "title", "content", "likesCount", "commentsCount", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfilePublic",
+      "description": "Public profile details of users."
+    },
+    "/users/{userId}/private/info": {
+      "schema": "UserProfilePrivate",
+      "description": "PII contacts and settings isolated inside private sub-collection to ensure complete GDPR/PDPA compliance."
+    },
+    "/itineraries/{itineraryId}": {
+      "schema": "Itinerary",
+      "description": "Plans generated by Gemini API that can be saved and retrieved."
+    },
+    "/affiliate_clicks/{clickId}": {
+      "schema": "AffiliateClickLog",
+      "description": "Conversion ledger of external business transitions."
+    },
+    "/posts/{postId}": {
+      "schema": "CommunityPost",
+      "description": "Posts in the VNR Travel Enthusiast Forum."
+    },
+    "/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "User comments on travel experiences posts."
+    },
+    "/likes/{likeId}": {
+      "schema": "Like",
+      "description": "Likes and upvotes tracking register."
+    }
+  }
+}

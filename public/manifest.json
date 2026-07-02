@@ -1,0 +1,29 @@
+{
+  "short_name": "VNR Travel",
+  "name": "VNR Travel AI - Kế Hoạch & Cộng Đồng Du Lịch Đường Sắt Việt Nam",
+  "description": "Trình lên kế hoạch & cộng đồng du lịch bằng tàu hoả Việt Nam thông minh",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#01411C",
+  "theme_color": "#01411C",
+  "display": "standalone",
+  "orientation": "portrait"
+}

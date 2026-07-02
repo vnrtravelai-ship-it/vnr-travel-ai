@@ -1,0 +1,6 @@
+{
+  "name": "VNR Travel AI",
+  "description": "Nền tảng du lịch đường sắt Việt Nam tích hợp AI: Lập kế hoạch lịch trình, cộng đồng, vé tàu du lịch, khách sạn và tour.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

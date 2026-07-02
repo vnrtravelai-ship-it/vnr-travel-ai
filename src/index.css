@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Be Vietnam Pro", "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Inter", "Be Vietnam Pro", "Noto Sans", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Glassmorphism overrides for beautiful scenic background presentation */
+#vnr-scenic-app .relative.z-10.bg-white\/95,
+#vnr-scenic-app .relative.z-10.bg-white\/98 {
+  background-color: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15) !important;
+}
+
+#vnr-scenic-app .bg-white {
+  background-color: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+#vnr-scenic-app .bg-slate-50,
+#vnr-scenic-app .bg-slate-100 {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+#vnr-scenic-app .bg-green-50,
+#vnr-scenic-app .bg-green-100,
+#vnr-scenic-app .bg-emerald-50,
+#vnr-scenic-app .bg-emerald-100 {
+  background-color: rgba(1, 65, 28, 0.08) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border-color: rgba(1, 65, 28, 0.15) !important;
+}
+
+#vnr-scenic-app .bg-blue-50,
+#vnr-scenic-app .bg-blue-100 {
+  background-color: rgba(30, 64, 175, 0.08) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border-color: rgba(30, 64, 175, 0.15) !important;
+}
+
+#vnr-scenic-app .bg-\[\#01411C\],
+#vnr-scenic-app .bg-emerald-950,
+#vnr-scenic-app .bg-green-900 {
+  background-color: rgba(1, 65, 28, 0.75) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+#vnr-scenic-app .border-slate-200,
+#vnr-scenic-app .border-slate-205,
+#vnr-scenic-app .border-slate-150 {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Enhancing inputs, search boxes & details fields to look like luxury glassy blocks */
+#vnr-scenic-app input,
+#vnr-scenic-app select,
+#vnr-scenic-app textarea {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+#vnr-scenic-app input:focus,
+#vnr-scenic-app select:focus,
+#vnr-scenic-app textarea:focus {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(1, 65, 28, 0.5) !important;
+}
+
+/* --- OPTIMIZED TYPOGRAPHY SYSTEM --- */
+
+body {
+  font-family: "Inter", "Be Vietnam Pro", "Noto Sans", ui-sans-serif, system-ui, sans-serif !important;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-kerning: normal;
+}
+
+#vnr-scenic-app {
+  font-family: "Inter", "Be Vietnam Pro", "Noto Sans", ui-sans-serif, system-ui, sans-serif !important;
+  font-size: 17px !important; /* Body Text (Nội dung chính): 17px */
+  line-height: 1.6 !important; /* line-height (khoảng cách dòng) đặt từ 1.5 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+}
+
+/* Heading 1 (Tiêu đề lớn): 40px */
+#vnr-scenic-app h1,
+#vnr-scenic-app .h1,
+#vnr-scenic-app .text-4xl,
+#vnr-scenic-app .text-5xl,
+#vnr-scenic-app .text-6xl {
+  font-family: "Inter", "Be Vietnam Pro", "Noto Sans", sans-serif !important;
+  font-size: 40px !important;
+  line-height: 1.5 !important;
+  font-weight: 850 !important;
+  letter-spacing: normal !important;
+}
+
+/* Heading 2, 3 (Tiêu đề phụ): Dao động từ 25px */
+#vnr-scenic-app h2,
+#vnr-scenic-app h3,
+#vnr-scenic-app .h2,
+#vnr-scenic-app .h3,
+#vnr-scenic-app .text-xl,
+#vnr-scenic-app .text-2xl,
+#vnr-scenic-app .text-3xl {
+  font-family: "Inter", "Be Vietnam Pro", "Noto Sans", sans-serif !important;
+  font-size: 25px !important;
+  line-height: 1.5 !important;
+  font-weight: 750 !important;
+  letter-spacing: normal !important;
+}
+
+/* Chú thích, chữ nhỏ (Subtext): 14px */
+#vnr-scenic-app p.text-xs,
+#vnr-scenic-app span.text-xs,
+#vnr-scenic-app div.text-xs,
+#vnr-scenic-app p.text-\[9px\],
+#vnr-scenic-app p.text-\[10px\],
+#vnr-scenic-app p.text-\[11px\],
+#vnr-scenic-app span.text-\[8px\],
+#vnr-scenic-app span.text-\[9px\],
+#vnr-scenic-app span.text-\[10px\],
+#vnr-scenic-app span.text-\[11px\],
+#vnr-scenic-app div.text-\[10px\],
+#vnr-scenic-app .subtext {
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+
+#vnr-scenic-app p.text-sm,
+#vnr-scenic-app span.text-sm,
+#vnr-scenic-app div.text-sm {
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+}
+
+/* Nội dung chính (Body Text): 17px */
+#vnr-scenic-app p,
+#vnr-scenic-app .text-base,
+#vnr-scenic-app .text-md,
+#vnr-scenic-app li {
+  font-size: 17px !important;
+  line-height: 1.6 !important;
+}
+
+/* Overwrite slate/gray light typography to have strong contrast and readability on backgrounds */
+#vnr-scenic-app .text-slate-400,
+#vnr-scenic-app .text-slate-450 {
+  color: #273142 !important; /* Deep contrast charcoal gray */
+}
+
+#vnr-scenic-app .text-gray-400,
+#vnr-scenic-app .text-gray-500 {
+  color: #1a202c !important; /* Bold solid readable dark color */
+}
+
+#vnr-scenic-app .text-slate-500,
+#vnr-scenic-app .text-slate-600 {
+  color: #121824 !important; /* Ultra high contrast slate */
+}
+
+#vnr-scenic-app .text-slate-350,
+#vnr-scenic-app .text-slate-300 {
+  color: #f1f5f9 !important; /* Brighter, vibrant shade for text on dark modules */
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+
+

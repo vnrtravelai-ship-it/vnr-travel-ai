@@ -1,0 +1,33 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Default deny rule
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    // avatars/{uid}
+    match /avatars/{userId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // posts/{postId}
+    match /posts/{postId}/{allFiles=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // trips/{tripId}
+    match /trips/{tripId}/{allFiles=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // reviews/{reviewId}
+    match /reviews/{reviewId}/{allFiles=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
