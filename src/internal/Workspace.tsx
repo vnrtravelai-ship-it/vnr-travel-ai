@@ -33,7 +33,7 @@ export default function Workspace() {
   useEffect(() => {
     const checkLeads = async () => {
       try {
-        const res = await fetch("/api/leads");
+        const res = await fetch(`${API_URL}/api/leads`);
         const contentType = res.headers.get("content-type") || "";
         if (res.ok && contentType.includes("application/json")) {
           const data = await res.json();

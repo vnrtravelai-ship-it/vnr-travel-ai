@@ -169,10 +169,14 @@ class ObservabilityManager {
       try {
         if (db && typeof db.type === "string" && db.type !== "dummy") {
           for (const item of batch) {
-            await addDoc(collection(db, "observability_logs"), {
-              ...item,
-              syncTimestamp: serverTimestamp(),
-            });
+            const cleanItem = {...item,
+  metadata: item.metadata ?? {},
+  latencyMs: item.latencyMs ?? null,
+  stackTrace: item.stackTrace ?? null,
+  syncTimestamp: serverTimestamp(),
+};
+
+await addDoc(collection(db, "observability_logs"), cleanItem);
           }
         }
       } catch (e) {

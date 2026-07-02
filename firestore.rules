@@ -2,7 +2,6 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper functions
     function isSignedIn() {
       return request.auth != null;
     }
@@ -12,8 +11,8 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isSignedIn() 
-        && 'email' in request.auth.token 
+      return isSignedIn()
+        && 'email' in request.auth.token
         && request.auth.token.email == "vnrtravelai@gmail.com";
     }
 
@@ -21,84 +20,188 @@ service cloud.firestore {
       return request.resource.data;
     }
 
-    // Default deny secure gate
+    // Default deny
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // 1. Users profiles: public READ, owner can create/update, admin can read/update all profiles
+    // =========================
+    // USERS
+    // =========================
+
     match /users/{userId} {
       allow read: if true;
       allow create, update: if isOwner(userId) || isAdmin();
       allow delete: if isAdmin();
 
-      // Secured Sub-collection for isolated PII
       match /private/info {
         allow read, write: if isOwner(userId);
       }
     }
 
-    // 2. Users private info sub-collection (explicit check)
     match /users/{userId}/private/info {
       allow read, write: if isOwner(userId);
     }
 
-    // 3. Itineraries: owner CRUD, admin read
+    // =========================
+    // ITINERARIES
+    // =========================
+
     match /itineraries/{itineraryId} {
-      allow create: if isSignedIn() && (incoming().userId == request.auth.uid);
-      allow read: if (isSignedIn() && (resource == null || resource.data.userId == request.auth.uid)) || isAdmin();
-      allow update, delete: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn()
+        && incoming().userId == request.auth.uid;
+
+      allow read: if isAdmin()
+        || (isSignedIn()
+        && resource.data.userId == request.auth.uid);
+
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid;
     }
 
-    // 4. Affiliate clicks: authenticated create, admin read, no update/delete
+    // =========================
+    // LEADS
+    // =========================
+
+    match /leads/{leadId} {
+      allow create: if true;
+      allow read: if isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    // =========================
+    // CLICKS
+    // =========================
+
+    match /clicks/{clickId} {
+      allow create: if true;
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    // =========================
+    // AFFILIATE CLICKS
+    // =========================
+
     match /affiliateClicks/{clickId} {
-      allow get, list: if isAdmin();
       allow create: if isSignedIn();
+      allow get, list: if isAdmin();
       allow update, delete: if false;
     }
 
     match /affiliate_clicks/{clickId} {
-      allow get, list: if isAdmin();
       allow create: if isSignedIn();
+      allow get, list: if isAdmin();
       allow update, delete: if false;
     }
 
-    // 5. Forum (posts, comments, likes): authenticated create, public read, owner delete
+    // =========================
+    // POSTS
+    // =========================
+
     match /posts/{postId} {
       allow read: if true;
-      allow create: if isSignedIn() && (incoming().userId == request.auth.uid || incoming().authorId == request.auth.uid);
+
+      allow create: if isSignedIn()
+        && (
+          incoming().userId == request.auth.uid
+          || incoming().authorId == request.auth.uid
+        );
+
       allow update: if isSignedIn();
-      allow delete: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid || resource.data.authorId == request.auth.uid || isAdmin());
+
+      allow delete: if isAdmin()
+        || (
+          isSignedIn()
+          && (
+            resource.data.userId == request.auth.uid
+            || resource.data.authorId == request.auth.uid
+          )
+        );
     }
+
+    // =========================
+    // COMMENTS
+    // =========================
 
     match /comments/{commentId} {
+
       allow read: if true;
-      allow create: if isSignedIn() && (incoming().userId == request.auth.uid || incoming().authorId == request.auth.uid);
+
+      allow create: if isSignedIn()
+        && (
+          incoming().userId == request.auth.uid
+          || incoming().authorId == request.auth.uid
+        );
+
       allow update: if isSignedIn();
-      allow delete: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid || resource.data.authorId == request.auth.uid || isAdmin());
+
+      allow delete: if isAdmin()
+        || (
+          isSignedIn()
+          && (
+            resource.data.userId == request.auth.uid
+            || resource.data.authorId == request.auth.uid
+          )
+        );
     }
+
+    // =========================
+    // LIKES
+    // =========================
 
     match /likes/{likeId} {
+
       allow read: if true;
-      allow create: if isSignedIn() && (incoming().userId == request.auth.uid || incoming().authorId == request.auth.uid);
+
+      allow create: if isSignedIn()
+        && (
+          incoming().userId == request.auth.uid
+          || incoming().authorId == request.auth.uid
+        );
+
       allow update: if isSignedIn();
-      allow delete: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid || resource.data.authorId == request.auth.uid || isAdmin());
+
+      allow delete: if isAdmin()
+        || (
+          isSignedIn()
+          && (
+            resource.data.userId == request.auth.uid
+            || resource.data.authorId == request.auth.uid
+          )
+        );
     }
 
-    // 6. Admin CRM Audit Logs
+    // =========================
+    // OBSERVABILITY LOGS
+    // =========================
+
+    match /observability_logs/{logId} {
+      allow create: if true;
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    // =========================
+    // ADMIN LOGS
+    // =========================
+
     match /adminLogs/{logId} {
       allow read, write: if isAdmin();
     }
 
-    // 7. Audit Logs general match
     match /auditLogs/{logId} {
       allow read, write: if isAdmin();
     }
 
-    // 8. Crashes / Error logs
+    // =========================
+    // CRASH REPORTS
+    // =========================
+
     match /crashes/{crashId} {
       allow create: if true;
-      allow read, write: if isAdmin();
+      allow read, update, delete: if isAdmin();
     }
+
   }
 }
