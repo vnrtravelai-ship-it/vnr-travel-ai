@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Train, Compass, Users, BookOpen, Sparkles, Cpu, Award, Database, ShieldAlert } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import FounderDashboard from "./FounderDashboard";
-
+import { API_URL } from "../api";
 // Statically import internal sub-components. Since Workspace itself is lazy-loaded,
 // these will be bundled in the lazy chunk and not loaded in Production.
 import PrdViewer from "./PrdViewer";

@@ -1,0 +1,25 @@
+{
+  "entryPoints": [
+    "src",
+    "server.ts"
+  ],
+  "entryPointStrategy": "expand",
+  "out": "docs/api",
+  "plugin": [],
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/node_modules/**",
+    "**/dist/**"
+  ],
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": false,
+  "categorizeByGroup": true,
+  "sort": [
+    "source-order"
+  ],
+  "readme": "none",
+  "name": "VNR Travel AI Documentation",
+  "tsconfig": "tsconfig.typedoc.json"
+}
