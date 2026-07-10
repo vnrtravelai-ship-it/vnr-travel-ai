@@ -1,7 +1,8 @@
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
-import { GoogleGenAI, Type } from "@google/genai";
+import { Type } from "@google/genai";
+import { getAiClient } from "./src/server/providers/gemini.provider";
 
 dotenv.config();
 
@@ -104,27 +105,6 @@ const affiliateClicks: Array<{
     createdAt: new Date(Date.now() - 1000 * 60 * 300).toISOString(), // 5 hrs ago
   }
 ];
-
-// Lazy initialization for Gemini client to prevent crashing on module load if GEMINI_API_KEY is missing
-let aiClient: GoogleGenAI | null = null;
-
-function getAiClient(): GoogleGenAI {
-  if (!aiClient) {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      throw new Error("GEMINI_API_KEY environment variable is required");
-    }
-    aiClient = new GoogleGenAI({
-      apiKey,
-      httpOptions: {
-        headers: {
-          "User-Agent": "aistudio-build",
-        },
-      },
-    });
-  }
-  return aiClient;
-}
 
 // API endpoint to submit a lead / join community
 app.post("/api/leads", (req, res) => {
