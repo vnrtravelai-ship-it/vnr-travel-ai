@@ -1,6 +1,7 @@
 import { getAiClient } from "../providers/gemini.provider";
 import { buildItineraryPrompt } from "./itinerary.prompt";
 import { itinerarySystemInstruction } from "./itinerary.system";
+import { itinerarySchema } from "./itinerary.schema";
 
 export interface ItineraryRequest {
   departure: string;
@@ -14,17 +15,19 @@ export interface ItineraryRequest {
 export async function generateItinerary(
   request: ItineraryRequest
 ) {
-  if (!request.departure || !request.arrival) {
-    throw new Error("Departure and arrival are required.");
-  }
-
   const ai = getAiClient();
 
-  const prompt = buildItineraryPrompt(request);
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
 
-  return {
-    ai,
-    prompt,
-    systemInstruction: itinerarySystemInstruction,
-  };
+    contents: buildItineraryPrompt(request),
+
+    config: {
+      systemInstruction: itinerarySystemInstruction,
+      responseMimeType: "application/json",
+      responseSchema: itinerarySchema,
+    },
+  });
+
+  return JSON.parse(response.text || "{}");
 }

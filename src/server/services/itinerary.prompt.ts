@@ -1,32 +1,83 @@
 import { ItineraryRequest } from "./itinerary.service";
 
 export function buildItineraryPrompt(request: ItineraryRequest): string {
-  const duration = request.daysCount || 3;
-  const budget = request.budgetLevel || "Tiết kiệm";
-  const style = request.travelStyle || "Trải nghiệm văn hóa";
-  const companion = request.companion || "Một mình";
+  const {
+    departure,
+    arrival,
+    daysCount,
+    budgetLevel,
+    travelStyle,
+    companion,
+  } = request;
+
+  const duration = daysCount || 3;
+  const budget = budgetLevel || "Tiết kiệm";
+  const style = travelStyle || "Trải nghiệm văn hóa";
+  const companionText = companion || "Một mình";
 
   return `
-Lập lịch trình du lịch đường sắt từ ${request.departure} đến ${request.arrival}.
+Lập lịch trình du lịch đường sắt Việt Nam bằng tiếng Việt chi tiết từ ${departure} đi ${arrival} trong vòng ${duration} ngày.
 
-Yêu cầu:
+Yêu cầu cụ thể:
 
-- Thời gian: ${duration} ngày
+- Phong cách du lịch: ${style}
 - Ngân sách: ${budget}
-- Phong cách: ${style}
-- Đồng hành: ${companion}
+- Bạn đồng hành: ${companionText}
 
-Ưu tiên tuyệt đối trải nghiệm đường sắt.
+Lịch trình phải tập trung tuyệt đối vào trải nghiệm di chuyển bằng tàu hỏa.
 
-Nếu cần kết hợp phương tiện khác thì:
-- tối ưu thời gian
+Yêu cầu AI:
+
+- Ưu tiên các đoàn tàu thực tế của Đường sắt Việt Nam.
+- Có thể sử dụng các mác tàu như:
+  - SE1
+  - SE2
+  - SE3
+  - SE4
+  - SE5
+  - SE6
+  - SE7
+  - SE8
+  - SE19
+  - SE20
+  - HD1
+  - HD2
+  - Các đoàn tàu địa phương nếu phù hợp.
+
+Đối với mỗi chặng tàu cần đề xuất:
+
+- Mã tàu
+- Ga đi
+- Ga đến
+- Khung giờ phù hợp
+- Loại chỗ nên đặt
+- Giá vé ước tính
+- Kênh đặt vé (Baolau hoặc 12Go)
+
+Ngoài di chuyển bằng tàu cần đề xuất:
+
+- Khách sạn phù hợp
+- Tour địa phương
+- Địa điểm tham quan
+- Ẩm thực địa phương
+- Đặc sản nổi bật
+- Mẹo trải nghiệm đường sắt
+- Mẹo săn ảnh đẹp
+- Mẹo ngắm cảnh trên tàu
+- Các lưu ý khi di chuyển
+
+Nếu cần kết hợp phương tiện khác:
+
+- ưu tiên tối ưu thời gian
 - tối ưu chi phí
-- ưu tiên tàu chạy ban đêm để thay thế lưu trú
-- đề xuất khách sạn
-- đề xuất trải nghiệm
-- đề xuất đặc sản địa phương
-- đề xuất đối tác đặt dịch vụ.
+- ưu tiên tàu chạy ban đêm để tiết kiệm chi phí lưu trú
 
-Kết quả trả về phải đúng JSON.
+Toàn bộ kết quả phải đúng với responseSchema.
+
+Không giải thích.
+
+Không thêm markdown.
+
+Chỉ trả về JSON hợp lệ.
 `;
 }

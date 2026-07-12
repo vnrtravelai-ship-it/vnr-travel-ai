@@ -5,11 +5,12 @@ import { Type } from "@google/genai";
 import { getAiClient } from "./src/server/providers/gemini.provider";
 import leadsRoutes from "./src/server/routes/leads.routes";
 import clicksRoutes from "./src/server/routes/clicks.routes";
+import itineraryRoutes from "./src/server/routes/itinerary.routes";
 dotenv.config();
-
+console.log(process.env.GEMINI_API_KEY);
 const app = express();
 app.use(express.json());
-
+app.use("/api/itinerary", itineraryRoutes);
 app.use("/api", leadsRoutes);
 app.use("/api", clicksRoutes);
 const PORT = 3000;
@@ -108,149 +109,6 @@ const affiliateClicks: Array<{
     createdAt: new Date(Date.now() - 1000 * 60 * 300).toISOString(), // 5 hrs ago
   }
 ];
-
-// API endpoint to generate high-quality AI travel railway itinerary in Vietnam
-app.post("/api/itinerary", async (req, res) => {
-  try {
-    const { departure, arrival, daysCount, budgetLevel, travelStyle, companion } = req.body;
-
-    if (!departure || !arrival) {
-      return res.status(400).json({ error: "Điểm khởi hành và điểm đến không được để trống." });
-    }
-
-    const duration = daysCount || 3;
-    const budget = budgetLevel || "Tiết kiệm";
-    const style = travelStyle || "Trải nghiệm văn hóa";
-    const companionText = companion || "Một mình";
-
-    const prompt = `Lập lịch trình du lịch đường sắt Việt Nam bằng tiếng Việt chi tiết từ ${departure} đi ${arrival} trong vòng ${duration} ngày.
-Yêu cầu cụ thể:
-- Phong cách du lịch: ${style}
-- Ngân sách lý tính: ${budget}
-- Bạn đồng hành: ${companionText}
-
-Lịch trình phải tập trung tuyệt đối vào trải nghiệm di chuyển bằng tàu hỏa (bao gồm thông tin mã tàu thực tế của Đường sắt Việt Nam như SE1, SE2, SE3, SE4, SE19, SE20, Tàu kết nối di sản HD1/HD2, Tàu Trực tiếp kết nối di sản du lịch, v.v.), đề xuất khách sạn thực tế có liên kết đối tác, và các hoạt động tour địa phương.`;
-
-    const systemInstruction = `Bạn là chuyên gia thiết kế hành trình du lịch đường sắt cao cấp của Đường sắt Việt Nam (Vietnam Railways). 
-Nhiệm vụ của bạn là lập lịch trình du lịch chân thực, định dạng JSON chính xác. Các đề xuất phải sử dụng thông tin ga tàu, mã tàu thực tế, danh lam thắng cảnh và có tính thực tế cao nhất.`;
-
-    const ai = getAiClient();
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-      config: {
-        systemInstruction,
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            title: {
-              type: Type.STRING,
-              description: "Tiêu đề hấp dẫn cho hành trình du lịch đường sắt di sản.",
-            },
-            summary: {
-              type: Type.STRING,
-              description: "Tóm tắt ngắn gọn trải nghiệm và lý do tại sao chuyến đi này tuyệt vời.",
-            },
-            totalEstimatedCostVnd: {
-              type: Type.INTEGER,
-              description: "Tổng chi phí ước tính trung bình cho cả chuyến đi bằng đồng Việt Nam (VND).",
-            },
-            days: {
-              type: Type.ARRAY,
-              description: "Danh sách lịch trình từng ngày của chuyến đi.",
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  dayNumber: { type: Type.INTEGER },
-                  title: { type: Type.STRING, description: "Tiêu đề của ngày đó (ví dụ: 'Ngày 1: Vượt đèo Hải Vân hùng vĩ - Đến cố đô')" },
-                  description: { type: Type.STRING, description: "Mô tả tổng quát hoạt động, nhịp điệu của ngày." },
-                  activities: {
-                    type: Type.ARRAY,
-                    items: {
-                      type: Type.OBJECT,
-                      properties: {
-                        time: { type: Type.STRING, description: "Thời gian (ví dụ: '08:00' hoặc 'Buổi chiều')" },
-                        title: { type: Type.STRING },
-                        location: { type: Type.STRING },
-                        details: { type: Type.STRING, description: "Chi tiết hấp dẫn, tập trung vào mẹo ngắm cảnh đường tàu hoặc trải nghiệm." },
-                        costEstimateVnd: { type: Type.INTEGER, description: "Chi phí ước tính cá nhân bằng VND." },
-                      },
-                      required: ["time", "title", "details"],
-                    },
-                  },
-                  recommendedTrains: {
-                    type: Type.ARRAY,
-                    description: "Các mác tàu Đường sắt Việt Nam khuyên dùng cho chặng của ngày này.",
-                    items: {
-                      type: Type.OBJECT,
-                      properties: {
-                        trainCode: { type: Type.STRING, description: "Mã tàu thực tế ví dụ SE3, HD2, v.v." },
-                        departure: { type: Type.STRING },
-                        arrival: { type: Type.STRING },
-                        timeRange: { type: Type.STRING, description: "Khung giờ chạy thực tế ước lượng, ví dụ '08:00 - 11:30'" },
-                        seatTypeRecommended: { type: Type.STRING, description: "Khuyên dùng ví dụ: Ghế mềm điều hòa, Khoang 4 giường nằm cao cấp" },
-                        estimatedPriceVnd: { type: Type.INTEGER },
-                        bookingAffiliate: { type: Type.STRING, description: "Kênh đối tác: Baolau hoặc 12Go" },
-                      },
-                      required: ["trainCode", "departure", "arrival", "timeRange"],
-                    },
-                  },
-                },
-                required: ["dayNumber", "title", "description", "activities"],
-              },
-            },
-            recommendedHotels: {
-              type: Type.ARRAY,
-              description: "Các khách sạn thực tế tại điểm đến nên đặt, có thể kiếm hoa hồng liên kết.",
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  hotelName: { type: Type.STRING },
-                  location: { type: Type.STRING },
-                  starRating: { type: Type.INTEGER },
-                  pricePerNightVnd: { type: Type.INTEGER },
-                  whyRecommended: { type: Type.STRING, description: "Lý do lựa chọn, ưu điểm vị trí gần ga tàu hoặc tiện ích." },
-                },
-                required: ["hotelName", "location", "pricePerNightVnd", "whyRecommended"],
-              },
-            },
-            recommendedTours: {
-              type: Type.ARRAY,
-              description: "Các tour trải nghiệm địa phương của đối tác liên kết.",
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  tourName: { type: Type.STRING },
-                  duration: { type: Type.STRING },
-                  highlights: { type: Type.STRING },
-                  priceVnd: { type: Type.INTEGER },
-                  platform: { type: Type.STRING, description: "Klook hoặc VNR Local Tour Partner" },
-                },
-                required: ["tourName", "highlights", "priceVnd"],
-              },
-            },
-            survivalTips: {
-              type: Type.ARRAY,
-              description: "Lời khuyên 'sống sót' khi đi tàu tại Việt Nam (chuẩn bị đồ ăn, vệ sinh, sạc pin, vị trí ngồi đẹp nhất trên cung đường núi/biển).",
-              items: { type: Type.STRING },
-            },
-          },
-          required: ["title", "summary", "totalEstimatedCostVnd", "days", "recommendedHotels", "recommendedTours", "survivalTips"],
-        },
-      },
-    });
-
-    const parsedData = JSON.parse(response.text || "{}");
-    res.json(parsedData);
-  } catch (error: any) {
-    console.error("Gemini Generation Error:", error);
-    res.status(500).json({
-      error: "Không thể tạo lịch trình bằng AI. Vui lòng kiểm tra lại cấu hình API Key.",
-      details: error.message,
-    });
-  }
-});
 
 // API endpoint for interactive AI Railway Travel Assistant chatbot
 app.post("/api/chat", async (req, res) => {
