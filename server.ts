@@ -4,11 +4,14 @@ import dotenv from "dotenv";
 import { Type } from "@google/genai";
 import { getAiClient } from "./src/server/providers/gemini.provider";
 import leadsRoutes from "./src/server/routes/leads.routes";
+import clicksRoutes from "./src/server/routes/clicks.routes";
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+
 app.use("/api", leadsRoutes);
+app.use("/api", clicksRoutes);
 const PORT = 3000;
 
 // Shared user leads/community database in-memory for the demo.
@@ -105,63 +108,6 @@ const affiliateClicks: Array<{
     createdAt: new Date(Date.now() - 1000 * 60 * 300).toISOString(), // 5 hrs ago
   }
 ];
-
-// API endpoint to submit a lead / join community
-
-
-
-// API endpoint to track affiliate click conversions
-app.post("/api/clicks", (req, res) => {
-  const { 
-    clickId, 
-    userId, 
-    campaign, 
-    provider, 
-    serviceType,
-    route,
-    source,
-    targetUrl, 
-    referrer, 
-    device, 
-    platform, 
-    country, 
-    utm_source, 
-    utm_medium, 
-    utm_campaign 
-  } = req.body;
-  
-  if (!provider || !targetUrl) {
-    return res.status(400).json({ error: "Provider and target URL are required" });
-  }
-
-  const newClick = {
-    id: clickId || `clk-${Date.now()}`,
-    clickId: clickId || `clk-${Date.now()}`,
-    userId: userId || "guest",
-    campaign: campaign || "none",
-    provider,
-    serviceType: serviceType || "transport",
-    route: route || "Hà Nội ➔ Đà Nẵng",
-    source: source || utm_source || "none",
-    targetUrl,
-    referrer: referrer || "Direct",
-    device: device || "Desktop",
-    platform: platform || "Unknown",
-    country: country || "Vietnam",
-    utm_source: utm_source || source || "none",
-    utm_medium: utm_medium || "none",
-    utm_campaign: utm_campaign || campaign || "none",
-    createdAt: new Date().toISOString()
-  };
-
-  affiliateClicks.unshift(newClick); // Newer clicks first
-  res.status(201).json({ success: true, click: newClick });
-});
-
-// API endpoint to fetch all affiliate click logs
-app.get("/api/clicks", (req, res) => {
-  res.json({ clicks: affiliateClicks });
-});
 
 // API endpoint to generate high-quality AI travel railway itinerary in Vietnam
 app.post("/api/itinerary", async (req, res) => {
