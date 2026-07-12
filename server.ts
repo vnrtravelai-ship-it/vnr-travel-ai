@@ -3,12 +3,12 @@ import path from "path";
 import dotenv from "dotenv";
 import { Type } from "@google/genai";
 import { getAiClient } from "./src/server/providers/gemini.provider";
-
+import leadsRoutes from "./src/server/routes/leads.routes";
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-
+app.use("/api", leadsRoutes);
 const PORT = 3000;
 
 // Shared user leads/community database in-memory for the demo.
@@ -107,31 +107,8 @@ const affiliateClicks: Array<{
 ];
 
 // API endpoint to submit a lead / join community
-app.post("/api/leads", (req, res) => {
-  const { fullName, email, phoneNumber, travelFrequency, preferredRegions, notes } = req.body;
-  if (!fullName || !email || !phoneNumber) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
 
-  const newLead = {
-    id: `lead-${Date.now()}`,
-    fullName,
-    email,
-    phoneNumber,
-    travelFrequency: travelFrequency || "Thỉnh thoảng",
-    preferredRegions: preferredRegions || [],
-    notes,
-    createdAt: new Date().toISOString(),
-  };
 
-  communityLeads.push(newLead);
-  res.status(201).json({ success: true, lead: newLead });
-});
-
-// API endpoint to fetch all leads (for the Admin panel view in our PRD Hub)
-app.get("/api/leads", (req, res) => {
-  res.json({ leads: communityLeads });
-});
 
 // API endpoint to track affiliate click conversions
 app.post("/api/clicks", (req, res) => {
