@@ -1,0 +1,12 @@
+{
+  "id": "DNG-HUE-3-STANDARD-HERITAGE",
+  "departure": "Đà Nẵng",
+  "destination": "Huế",
+  "days": 3,
+  "budgetLevel": "Tiêu chuẩn",
+  "travelStyle": "Khám phá di sản",
+  "fileName": "danang-hue-3d-standard.json",
+  "version": "1.0.0",
+  "createdBy": "PlanningEngine",
+  "description": "Template chuẩn Đà Nẵng - Huế 3 ngày."
+}

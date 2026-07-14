@@ -9,6 +9,7 @@ export interface RailwayPlan {
   seatType: string;
   estimatedPrice: number;
   duration: string;
+  distanceKm: number;
 }
 
 export interface HotelPlan {
