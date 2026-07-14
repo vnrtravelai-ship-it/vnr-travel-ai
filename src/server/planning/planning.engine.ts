@@ -1,48 +1,66 @@
 import { PlanningRequest } from "./models/planning-request.model";
 import { PlanningContext } from "./models/planning-context.model";
+
 import { TemplateRepository } from "../repositories/template.repository";
+
 import { RailwayPlanner } from "./planners/railway.planner";
-const templateRepository = new TemplateRepository();
+
 export class PlanningEngine {
-  private railwayPlanner = new RailwayPlanner();
 
-  async buildContext( 
-    
-    request: PlanningRequest
-  ): Promise<PlanningContext> {
+    private templateRepository = new TemplateRepository();
 
-    const railway = await this.railwayPlanner.plan(request);
-    const template =
-    templateRepository.findByRequest(request);
+    private railwayPlanner = new RailwayPlanner();
 
-if (template) {
+    async buildContext(
+        request: PlanningRequest
+    ): Promise<PlanningContext> {
 
-    console.log(
-        "✔ Planning Template Found:",
-        template.id
-    );
+        // Kiểm tra Template trước
+        const template =
+            this.templateRepository.findByRequest(request);
 
-} else {
+        if (template) {
 
-    console.log(
-        "✖ No Template - Using Planners"
-    );
+            console.log(
+                "✔ Planning Template Found:",
+                template.id
+            );
 
-}
+        } else {
 
-    return {
-      request,
+            console.log(
+                "✖ No Template - Using Planners"
+            );
 
-      railway,
+        }
 
-      tours: [],
+        // Hiện tại vẫn luôn chạy Planner.
+        // Ở Phase 4 nếu Template đầy đủ sẽ return ngay tại đây.
+        const railwayContext =
+            await this.railwayPlanner.plan(request);
 
-      metadata: {
-        plannerVersion: "1.0.0",
-        generatedAt: new Date(),
-        locale: "vi-VN",
-        currency: "VND",
-      },
-    };
-  }
+        return {
+
+            request,
+
+            railway: railwayContext,
+
+            tours: [],
+
+            metadata: {
+
+                plannerVersion: "1.0.0",
+
+                generatedAt: new Date(),
+
+                locale: "vi-VN",
+
+                currency: "VND",
+
+            },
+
+        };
+
+    }
+
 }
