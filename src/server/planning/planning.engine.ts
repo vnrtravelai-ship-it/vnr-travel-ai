@@ -2,10 +2,13 @@ import { PlanningRequest } from "./models/planning-request.model";
 import { PlanningContext } from "./models/planning-context.model";
 
 import { TemplateRepository } from "../repositories/template.repository";
-
 import { RailwayPlanner } from "./planners/railway.planner";
 
+import { PlanningCacheManager } from "../cache/managers/planning-cache.manager";
+
 export class PlanningEngine {
+
+    private cacheManager = new PlanningCacheManager();
 
     private templateRepository = new TemplateRepository();
 
@@ -15,7 +18,19 @@ export class PlanningEngine {
         request: PlanningRequest
     ): Promise<PlanningContext> {
 
-        // Kiểm tra Template trước
+        const cached =
+            this.cacheManager.get(request);
+
+        if (cached) {
+
+            console.log("⚡ Cache Hit");
+
+            return cached;
+
+        }
+
+        console.log("🆕 Cache Miss");
+
         const template =
             this.templateRepository.findByRequest(request);
 
@@ -34,12 +49,10 @@ export class PlanningEngine {
 
         }
 
-        // Hiện tại vẫn luôn chạy Planner.
-        // Ở Phase 4 nếu Template đầy đủ sẽ return ngay tại đây.
         const railwayContext =
             await this.railwayPlanner.plan(request);
 
-        return {
+        const context: PlanningContext = {
 
             request,
 
@@ -60,6 +73,13 @@ export class PlanningEngine {
             },
 
         };
+
+        this.cacheManager.save(
+            request,
+            context
+        );
+
+        return context;
 
     }
 

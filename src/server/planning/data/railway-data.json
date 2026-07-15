@@ -1,0 +1,24 @@
+[
+  {
+    "departure": "Đà Nẵng",
+    "arrival": "Huế",
+    "distanceKm": 103,
+    "duration": "2 giờ 38 phút",
+    "seatType": "Ghế mềm điều hòa",
+    "estimatedPrice": 435000,
+    "trainCode": "SE1",
+    "departureTime": "07:50",
+    "arrivalTime": "10:28"
+  },
+  {
+    "departure": "Hà Nội",
+    "arrival": "Đà Nẵng",
+    "distanceKm": 791,
+    "duration": "15 giờ 42 phút",
+    "seatType": "Ghế mềm điều hòa",
+    "estimatedPrice": 1045000,
+    "trainCode": "SE3",
+    "departureTime": "19:20",
+    "arrivalTime": "11:02"
+  }
+]

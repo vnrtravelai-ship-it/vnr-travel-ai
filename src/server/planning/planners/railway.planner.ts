@@ -1,42 +1,56 @@
 import { PlanningRequest } from "../models/planning-request.model";
 import { RailwayPlan } from "../models/planning-context.model";
+
 import { RailwayRepository } from "../../repositories/railway.repository";
 
 const repository = new RailwayRepository();
 
 export class RailwayPlanner {
-  async plan(
-    request: PlanningRequest
-  ): Promise<RailwayPlan> {
 
-    const route = repository.findRoute(
-    request.departure,
-    request.destination
-);
+    async plan(
+        request: PlanningRequest
+    ): Promise<RailwayPlan> {
 
-    const train = repository.findTrain(
-    request.departure,
-    request.destination
-);
+        const route =
+            repository.findRoute(
 
-    return {
-      trainCode: train?.trainCode ?? "",
+                request.departure,
 
-      departureStation: request.departure,
+                request.destination
 
-      arrivalStation: request.destination,
+            );
 
-      departureTime: train?.departureTime ?? "",
+        return {
 
-      arrivalTime: train?.arrivalTime ?? "",
+            trainCode:
+                route?.trainCode ?? "",
 
-      seatType: train?.seatTypes[0] ?? "",
+            departureStation:
+                request.departure,
 
-      estimatedPrice: train?.estimatedPrice ?? 0,
+            arrivalStation:
+                request.destination,
 
-      duration: train?.duration ?? "",
+            departureTime:
+                route?.departureTime ?? "",
 
-      distanceKm: route?.distanceKm ?? 0,
-    };
-  }
+            arrivalTime:
+                route?.arrivalTime ?? "",
+
+            seatType:
+                route?.seatType ?? "",
+
+            estimatedPrice:
+                route?.estimatedPrice ?? 0,
+
+            duration:
+                route?.duration ?? "",
+
+            distanceKm:
+                route?.distanceKm ?? 0,
+
+        };
+
+    }
+
 }
