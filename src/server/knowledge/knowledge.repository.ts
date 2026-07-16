@@ -8,61 +8,30 @@ import { FoodService } from "./services/food.service";
 
 export class KnowledgeRepository {
 
-    private railwayRepository: RailwayRepository;
+    readonly railwayService: RailwayService;
 
-    private hotelRepository: HotelRepository;
+    readonly hotelService: HotelService;
 
-    private foodRepository: FoodRepository;
+    readonly foodService: FoodService;
 
-    private railwayService: RailwayService;
+    constructor(
 
-    private hotelService: HotelService;
+        railwayRepository: RailwayRepository,
 
-    private foodService: FoodService;
+        hotelRepository: HotelRepository,
 
-    constructor() {
+        foodRepository: FoodRepository
 
-        this.railwayRepository =
-            new RailwayRepository();
-
-        this.hotelRepository =
-            new HotelRepository();
-
-        this.foodRepository =
-            new FoodRepository();
+    ) {
 
         this.railwayService =
-            new RailwayService(
-                this.railwayRepository
-            );
+            new RailwayService(railwayRepository);
 
         this.hotelService =
-            new HotelService(
-                this.hotelRepository
-            );
+            new HotelService(hotelRepository);
 
         this.foodService =
-            new FoodService(
-                this.foodRepository
-            );
-
-    }
-
-    railwayServiceInstance() {
-
-        return this.railwayService;
-
-    }
-
-    hotelServiceInstance() {
-
-        return this.hotelService;
-
-    }
-
-    foodServiceInstance() {
-
-        return this.foodService;
+            new FoodService(foodRepository);
 
     }
 

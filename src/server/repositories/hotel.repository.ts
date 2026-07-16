@@ -1,59 +1,29 @@
-import fs from "fs";
-import path from "path";
+import { HotelProvider }
+from "../providers/hotel/hotel.provider";
 
-export interface Hotel {
-
-    id: string;
-
-    city: string;
-
-    name: string;
-
-    stars: number;
-
-    priceFrom: number;
-
-    address: string;
-
-    latitude: number;
-
-    longitude: number;
-
-}
+import {
+    HotelSummary
+} from "../planning/models/planning-context.model";
 
 export class HotelRepository {
 
-    private hotels: Hotel[];
+    constructor(
 
-    constructor() {
+        private provider: HotelProvider
 
-        const filePath = path.join(
-            process.cwd(),
-            "src/server/planning/data/hotels.json"
+    ) { }
+
+    findHotels(
+
+        location: string
+
+    ): HotelSummary[] {
+
+        return this.provider.findHotels(
+
+            location
+
         );
-
-        const json = fs.readFileSync(
-            filePath,
-            "utf8"
-        );
-
-        this.hotels = JSON.parse(json);
-
-    }
-
-    findByCity(
-        city: string
-    ): Hotel[] {
-
-        return this.hotels.filter(
-            hotel => hotel.city === city
-        );
-
-    }
-
-    getAll(): Hotel[] {
-
-        return this.hotels;
 
     }
 

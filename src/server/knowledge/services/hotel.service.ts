@@ -1,53 +1,54 @@
 import { BaseService } from "./base.service";
 
-import { PlanningRequest } from "../../planning/models/planning-request.model";
+import { PlanningRequest }
+from "../../planning/models/planning-request.model";
 
 import {
     HotelPlan,
     HotelSummary
-} from "../../planning/models/planning-context.model";
+}
+from "../../planning/models/planning-context.model";
 
-import { HotelRepository } from "../../repositories/hotel.repository";
+import { HotelRepository }
+from "../../repositories/hotel.repository";
 
 export class HotelService
-    extends BaseService<PlanningRequest, HotelPlan> {
+extends BaseService<PlanningRequest, HotelPlan> {
 
     constructor(
+
         private repository: HotelRepository
+
     ) {
+
         super();
+
     }
 
     async plan(
+
         request: PlanningRequest
+
     ): Promise<HotelPlan> {
 
-        const hotels = this.repository.findByCity(
-            request.destination
-        );
+        const hotels: HotelSummary[] =
+            this.repository.findHotels(
 
-        const recommendedHotels: HotelSummary[] = hotels.map(hotel => ({
+                request.destination
 
-            id: hotel.id,
-
-            name: hotel.name,
-
-            stars: hotel.stars,
-
-            priceFrom: hotel.priceFrom,
-
-            address: hotel.address,
-
-        }));
+            );
 
         return {
 
-            recommendedHotels,
+            recommendedHotels: hotels,
 
             selectedHotel:
-                recommendedHotels.length > 0
-                    ? recommendedHotels[0]
-                    : undefined,
+
+                hotels.length > 0
+
+                    ? hotels[0]
+
+                    : undefined
 
         };
 

@@ -1,55 +1,29 @@
-import fs from "fs";
-import path from "path";
+import { FoodProvider }
+from "../providers/food/food.provider";
 
-export interface FoodData {
-
-    city: string;
-
-    breakfast: string;
-
-    lunch: string;
-
-    dinner: string;
-
-    coffee: string;
-
-    specialties: string[];
-
-}
+import {
+    FoodPlan
+} from "../planning/models/planning-context.model";
 
 export class FoodRepository {
 
-    private foods: FoodData[];
+    constructor(
 
-    constructor() {
+        private provider: FoodProvider
 
-        const filePath = path.join(
-            process.cwd(),
-            "src/server/planning/data/foods.json"
+    ) { }
+
+    findFood(
+
+        location: string
+
+    ): FoodPlan | undefined {
+
+        return this.provider.findFood(
+
+            location
+
         );
-
-        const json = fs.readFileSync(
-            filePath,
-            "utf8"
-        );
-
-        this.foods = JSON.parse(json);
-
-    }
-
-    findByCity(
-        city: string
-    ): FoodData | undefined {
-
-        return this.foods.find(
-            food => food.city === city
-        );
-
-    }
-
-    getAll(): FoodData[] {
-
-        return this.foods;
 
     }
 

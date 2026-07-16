@@ -1,18 +1,12 @@
 import { PlanningRequest } from "./models/planning-request.model";
 import { PlanningContext } from "./models/planning-context.model";
 
-import { TemplateRepository } from "../repositories/template.repository";
-
-import { PlanningCacheManager } from "../cache/managers/planning-cache.manager";
-import { KnowledgeRepository } from "../knowledge/knowledge.repository";
+import { ApplicationContainer } from "../core/application.container";
 
 export class PlanningEngine {
 
-    private cacheManager = new PlanningCacheManager();
-
-    private templateRepository = new TemplateRepository();
-
-    private knowledge = new KnowledgeRepository();
+    private container =
+        ApplicationContainer.getInstance();
 
     async buildContext(
         request: PlanningRequest
@@ -22,7 +16,10 @@ export class PlanningEngine {
         // 1. CACHE
         // ===============================
 
-        const cached = this.cacheManager.get(request);
+        const cached =
+            this.container
+                .cacheManager
+                .get(request);
 
         if (cached) {
 
@@ -39,7 +36,9 @@ export class PlanningEngine {
         // ===============================
 
         const template =
-            this.templateRepository.findByRequest(request);
+            this.container
+                .templateRepository
+                .findByRequest(request);
 
         if (template) {
 
@@ -61,18 +60,21 @@ export class PlanningEngine {
         // ===============================
 
         const railwayContext =
-            await this.knowledge
-                .railwayServiceInstance()
+            await this.container
+                .knowledgeRepository
+                .railwayService
                 .plan(request);
 
         const hotelContext =
-            await this.knowledge
-                .hotelServiceInstance()
+            await this.container
+                .knowledgeRepository
+                .hotelService
                 .plan(request);
 
         const foodContext =
-            await this.knowledge
-                .foodServiceInstance()
+            await this.container
+                .knowledgeRepository
+                .foodService
                 .plan(request);
 
         // ===============================
@@ -113,10 +115,12 @@ export class PlanningEngine {
         // 5. SAVE CACHE
         // ===============================
 
-        this.cacheManager.save(
-            request,
-            context
-        );
+        this.container
+            .cacheManager
+            .save(
+                request,
+                context
+            );
 
         return context;
 

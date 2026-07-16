@@ -13,46 +13,55 @@ export class RailwayService
 extends BaseService<PlanningRequest, RailwayPlan> {
 
     constructor(
+
         private repository: RailwayRepository
+
     ) {
+
         super();
+
     }
 
     async plan(
+
         request: PlanningRequest
+
     ): Promise<RailwayPlan> {
 
         const route =
             this.repository.findRoute(
-                request.departure,
-                request.destination
-            );
 
-        const train =
-            this.repository.findTrain(
                 request.departure,
+
                 request.destination
+
             );
 
         return {
 
-            trainCode: train?.trainCode ?? "",
+            trainCode:
+                route?.trainCode ?? "",
 
-            departureStation: request.departure,
+            departureStation:
+                request.departure,
 
-            arrivalStation: request.destination,
+            arrivalStation:
+                request.destination,
 
-            departureTime: train?.departureTime ?? "",
+            departureTime:
+                route?.departureTime ?? "",
 
-            arrivalTime: train?.arrivalTime ?? "",
+            arrivalTime:
+                route?.arrivalTime ?? "",
 
-            seatType: train?.seatType ?? "",
+            seatType:
+                route?.seatType ?? "",
 
             estimatedPrice:
-                train?.estimatedPrice ?? 0,
+                route?.estimatedPrice ?? 0,
 
             duration:
-                train?.duration ?? "",
+                route?.duration ?? "",
 
             distanceKm:
                 route?.distanceKm ?? 0,
