@@ -2,9 +2,9 @@ import { PlanningRequest } from "./models/planning-request.model";
 import { PlanningContext } from "./models/planning-context.model";
 
 import { TemplateRepository } from "../repositories/template.repository";
-import { RailwayPlanner } from "./planners/railway.planner";
 
 import { PlanningCacheManager } from "../cache/managers/planning-cache.manager";
+import { KnowledgeRepository } from "../knowledge/knowledge.repository";
 
 export class PlanningEngine {
 
@@ -12,14 +12,17 @@ export class PlanningEngine {
 
     private templateRepository = new TemplateRepository();
 
-    private railwayPlanner = new RailwayPlanner();
+    private knowledge = new KnowledgeRepository();
 
     async buildContext(
         request: PlanningRequest
     ): Promise<PlanningContext> {
 
-        const cached =
-            this.cacheManager.get(request);
+        // ===============================
+        // 1. CACHE
+        // ===============================
+
+        const cached = this.cacheManager.get(request);
 
         if (cached) {
 
@@ -30,6 +33,10 @@ export class PlanningEngine {
         }
 
         console.log("🆕 Cache Miss");
+
+        // ===============================
+        // 2. TEMPLATE
+        // ===============================
 
         const template =
             this.templateRepository.findByRequest(request);
@@ -49,8 +56,28 @@ export class PlanningEngine {
 
         }
 
+        // ===============================
+        // 3. KNOWLEDGE SERVICES
+        // ===============================
+
         const railwayContext =
-            await this.railwayPlanner.plan(request);
+            await this.knowledge
+                .railwayServiceInstance()
+                .plan(request);
+
+        const hotelContext =
+            await this.knowledge
+                .hotelServiceInstance()
+                .plan(request);
+
+        const foodContext =
+            await this.knowledge
+                .foodServiceInstance()
+                .plan(request);
+
+        // ===============================
+        // 4. BUILD CONTEXT
+        // ===============================
 
         const context: PlanningContext = {
 
@@ -58,7 +85,15 @@ export class PlanningEngine {
 
             railway: railwayContext,
 
+            hotel: hotelContext,
+
+            food: foodContext,
+
             tours: [],
+
+            budget: undefined,
+
+            affiliate: undefined,
 
             metadata: {
 
@@ -73,6 +108,10 @@ export class PlanningEngine {
             },
 
         };
+
+        // ===============================
+        // 5. SAVE CACHE
+        // ===============================
 
         this.cacheManager.save(
             request,

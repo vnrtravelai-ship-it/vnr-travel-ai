@@ -1,0 +1,26 @@
+[
+  {
+    "city": "Đà Nẵng",
+    "breakfast": "Mỳ Quảng Bà Mua",
+    "lunch": "Bún Chả Cá Hờn",
+    "dinner": "Hải sản Bé Mặn",
+    "coffee": "43 Factory Coffee",
+    "specialties": [
+      "Mỳ Quảng",
+      "Bánh tráng cuốn thịt heo",
+      "Chả bò Đà Nẵng"
+    ]
+  },
+  {
+    "city": "Huế",
+    "breakfast": "Bún Bò Mệ Kéo",
+    "lunch": "Cơm Hến Hoa Đông",
+    "dinner": "Bánh Khoái Lạc Thiện",
+    "coffee": "Tân Coffee",
+    "specialties": [
+      "Bún bò Huế",
+      "Bánh bèo",
+      "Nem lụi"
+    ]
+  }
+]

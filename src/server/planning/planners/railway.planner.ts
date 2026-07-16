@@ -1,18 +1,24 @@
 import { PlanningRequest } from "../models/planning-request.model";
 import { RailwayPlan } from "../models/planning-context.model";
 
-import { RailwayRepository } from "../../repositories/railway.repository";
-
-const repository = new RailwayRepository();
+import {
+    RailwayRepository
+} from "../../repositories/railway.repository";
 
 export class RailwayPlanner {
+
+    constructor(
+
+        private repository: RailwayRepository
+
+    ) {}
 
     async plan(
         request: PlanningRequest
     ): Promise<RailwayPlan> {
 
         const route =
-            repository.findRoute(
+            this.repository.findRoute(
 
                 request.departure,
 

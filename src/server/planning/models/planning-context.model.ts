@@ -1,76 +1,151 @@
 import { PlanningRequest } from "./planning-request.model";
 
+/* =====================================================
+ * Railway
+ * ===================================================== */
+
 export interface RailwayPlan {
-  trainCode: string;
-  departureStation: string;
-  arrivalStation: string;
-  departureTime: string;
-  arrivalTime: string;
-  seatType: string;
-  estimatedPrice: number;
-  duration: string;
-  distanceKm: number;
+    trainCode: string;
+
+    departureStation: string;
+    arrivalStation: string;
+
+    departureTime: string;
+    arrivalTime: string;
+
+    seatType: string;
+
+    estimatedPrice: number;
+
+    duration: string;
+
+    distanceKm: number;
+}
+
+/* =====================================================
+ * Hotel
+ * ===================================================== */
+
+export interface HotelSummary {
+    id: string;
+
+    name: string;
+
+    stars: number;
+
+    priceFrom: number;
+
+    address: string;
 }
 
 export interface HotelPlan {
-  hotelName: string;
-  location: string;
-  checkIn?: string;
-  checkOut?: string;
-  pricePerNight: number;
-  affiliateProvider?: string;
+
+    recommendedHotels: HotelSummary[];
+
+    selectedHotel?: HotelSummary;
+
 }
+
+/* =====================================================
+ * Food
+ * ===================================================== */
 
 export interface FoodPlan {
-  breakfast?: string;
-  lunch?: string;
-  dinner?: string;
-  coffee?: string;
-  specialties: string[];
+
+    breakfast?: string;
+
+    lunch?: string;
+
+    dinner?: string;
+
+    coffee?: string;
+
+    specialties: string[];
+
 }
+
+/* =====================================================
+ * Tours
+ * ===================================================== */
 
 export interface TourPlan {
-  name: string;
-  location: string;
-  duration: string;
-  estimatedPrice: number;
+
+    name: string;
+
+    location: string;
+
+    duration: string;
+
+    estimatedPrice: number;
+
 }
+
+/* =====================================================
+ * Budget
+ * ===================================================== */
 
 export interface BudgetPlan {
-  railway: number;
-  hotel: number;
-  food: number;
-  tours: number;
-  transport: number;
-  miscellaneous: number;
-  total: number;
+
+    railway: number;
+
+    hotel: number;
+
+    food: number;
+
+    tours: number;
+
+    transport: number;
+
+    miscellaneous: number;
+
+    total: number;
+
 }
+
+/* =====================================================
+ * Affiliate
+ * ===================================================== */
 
 export interface AffiliatePlan {
-  railway?: string;
-  hotel?: string;
-  tour?: string;
+
+    railway?: string;
+
+    hotel?: string;
+
+    tour?: string;
+
 }
 
+/* =====================================================
+ * Planning Context
+ * ===================================================== */
+
 export interface PlanningContext {
-  request: PlanningRequest;
 
-  railway?: RailwayPlan;
+    request: PlanningRequest;
 
-  hotel?: HotelPlan;
+    railway?: RailwayPlan;
 
-  food?: FoodPlan;
+    hotel?: HotelPlan;
 
-  tours: TourPlan[];
+    food?: FoodPlan;
 
-  budget?: BudgetPlan;
+    tours: TourPlan[];
 
-  affiliate?: AffiliatePlan;
+    budget?: BudgetPlan;
 
-  metadata: {
-    plannerVersion: string;
-    generatedAt: Date;
-    locale: string;
-    currency: string;
-  };
+    affiliate?: AffiliatePlan;
+
+    metadata: {
+
+        plannerVersion: string;
+
+        generatedAt: Date;
+
+        locale: string;
+
+        currency: string;
+
+    };
+
 }

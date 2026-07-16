@@ -1,0 +1,32 @@
+[
+  {
+    "id": "hotel-001",
+    "city": "Đà Nẵng",
+    "name": "Mường Thanh Luxury Đà Nẵng",
+    "stars": 5,
+    "priceFrom": 1350000,
+    "address": "270 Võ Nguyên Giáp",
+    "latitude": 16.0525,
+    "longitude": 108.2478
+  },
+  {
+    "id": "hotel-002",
+    "city": "Đà Nẵng",
+    "name": "Sala Danang Beach Hotel",
+    "stars": 4,
+    "priceFrom": 980000,
+    "address": "36 Lâm Hoành",
+    "latitude": 16.0615,
+    "longitude": 108.2462
+  },
+  {
+    "id": "hotel-003",
+    "city": "Huế",
+    "name": "Melia Vinpearl Huế",
+    "stars": 5,
+    "priceFrom": 1450000,
+    "address": "50A Hùng Vương",
+    "latitude": 16.4639,
+    "longitude": 107.5904
+  }
+]
