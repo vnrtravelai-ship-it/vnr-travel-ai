@@ -1,11 +1,13 @@
 import { RailwayRepository } from "../repositories/railway.repository";
 import { HotelRepository } from "../repositories/hotel.repository";
 import { FoodRepository } from "../repositories/food.repository";
+import { TourRepository } from "../repositories/tour.repository";
 import { TemplateRepository } from "../repositories/template.repository";
 
 import { RailwayProvider } from "../providers/railway/railway.provider";
 import { HotelProvider } from "../providers/hotel/hotel.provider";
 import { FoodProvider } from "../providers/food/food.provider";
+import { TourProvider } from "../providers/tour/tour.provider";
 
 import { PlanningCacheManager } from "../cache/managers/planning-cache.manager";
 
@@ -15,9 +17,9 @@ export class ApplicationContainer {
 
     private static instance: ApplicationContainer;
 
-    // ===============================
+    // =====================================
     // Providers
-    // ===============================
+    // =====================================
 
     readonly railwayProvider: RailwayProvider;
 
@@ -25,9 +27,11 @@ export class ApplicationContainer {
 
     readonly foodProvider: FoodProvider;
 
-    // ===============================
+    readonly tourProvider: TourProvider;
+
+    // =====================================
     // Repositories
-    // ===============================
+    // =====================================
 
     readonly railwayRepository: RailwayRepository;
 
@@ -35,11 +39,13 @@ export class ApplicationContainer {
 
     readonly foodRepository: FoodRepository;
 
+    readonly tourRepository: TourRepository;
+
     readonly templateRepository: TemplateRepository;
 
-    // ===============================
+    // =====================================
     // Infrastructure
-    // ===============================
+    // =====================================
 
     readonly cacheManager: PlanningCacheManager;
 
@@ -47,9 +53,9 @@ export class ApplicationContainer {
 
     private constructor() {
 
-        // ===============================
+        // =====================================
         // Providers
-        // ===============================
+        // =====================================
 
         this.railwayProvider =
             new RailwayProvider();
@@ -60,9 +66,12 @@ export class ApplicationContainer {
         this.foodProvider =
             new FoodProvider();
 
-        // ===============================
+        this.tourProvider =
+            new TourProvider();
+
+        // =====================================
         // Repositories
-        // ===============================
+        // =====================================
 
         this.railwayRepository =
             new RailwayRepository(
@@ -79,19 +88,24 @@ export class ApplicationContainer {
                 this.foodProvider
             );
 
+        this.tourRepository =
+            new TourRepository(
+                this.tourProvider
+            );
+
         this.templateRepository =
             new TemplateRepository();
 
-        // ===============================
-        // Cache
-        // ===============================
+        // =====================================
+        // Infrastructure
+        // =====================================
 
         this.cacheManager =
             new PlanningCacheManager();
 
-        // ===============================
+        // =====================================
         // Knowledge Layer
-        // ===============================
+        // =====================================
 
         this.knowledgeRepository =
             new KnowledgeRepository(
@@ -100,7 +114,9 @@ export class ApplicationContainer {
 
                 this.hotelRepository,
 
-                this.foodRepository
+                this.foodRepository,
+
+                this.tourRepository
 
             );
 

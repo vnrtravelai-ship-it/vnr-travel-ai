@@ -5,12 +5,15 @@ import { PlanningRequest } from "./planning-request.model";
  * ===================================================== */
 
 export interface RailwayPlan {
+
     trainCode: string;
 
     departureStation: string;
+
     arrivalStation: string;
 
     departureTime: string;
+
     arrivalTime: string;
 
     seatType: string;
@@ -20,6 +23,7 @@ export interface RailwayPlan {
     duration: string;
 
     distanceKm: number;
+
 }
 
 /* =====================================================
@@ -27,6 +31,7 @@ export interface RailwayPlan {
  * ===================================================== */
 
 export interface HotelSummary {
+
     id: string;
 
     name: string;
@@ -36,6 +41,15 @@ export interface HotelSummary {
     priceFrom: number;
 
     address: string;
+
+    latitude?: number;
+
+    longitude?: number;
+
+    affiliateProvider?: string;
+
+    affiliateUrl?: string;
+
 }
 
 export interface HotelPlan {
@@ -65,18 +79,36 @@ export interface FoodPlan {
 }
 
 /* =====================================================
- * Tours
+ * Tour / POI
  * ===================================================== */
 
 export interface TourPlan {
 
+    id: string;
+
+    city: string;
+
     name: string;
 
-    location: string;
+    category: string;
 
     duration: string;
 
     estimatedPrice: number;
+
+    address: string;
+
+    openingHours: string;
+
+    latitude?: number;
+
+    longitude?: number;
+
+    tags: string[];
+
+    affiliateProvider?: string;
+
+    affiliateUrl?: string;
 
 }
 
@@ -114,6 +146,32 @@ export interface AffiliatePlan {
 
     tour?: string;
 
+    flight?: string;
+
+    bus?: string;
+
+    insurance?: string;
+
+}
+
+/* =====================================================
+ * AI Metadata
+ * ===================================================== */
+
+export interface PlanningMetadata {
+
+    plannerVersion: string;
+
+    generatedAt: Date;
+
+    locale: string;
+
+    currency: string;
+
+    aiProvider?: string;
+
+    model?: string;
+
 }
 
 /* =====================================================
@@ -136,16 +194,6 @@ export interface PlanningContext {
 
     affiliate?: AffiliatePlan;
 
-    metadata: {
-
-        plannerVersion: string;
-
-        generatedAt: Date;
-
-        locale: string;
-
-        currency: string;
-
-    };
+    metadata: PlanningMetadata;
 
 }

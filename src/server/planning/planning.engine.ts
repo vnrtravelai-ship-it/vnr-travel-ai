@@ -1,7 +1,11 @@
 import { PlanningRequest } from "./models/planning-request.model";
-import { PlanningContext } from "./models/planning-context.model";
+import {
+    PlanningContext,
+    PlanningMetadata
+} from "./models/planning-context.model";
 
-import { ApplicationContainer } from "../core/application.container";
+import { ApplicationContainer }
+from "../core/application.container";
 
 export class PlanningEngine {
 
@@ -12,9 +16,9 @@ export class PlanningEngine {
         request: PlanningRequest
     ): Promise<PlanningContext> {
 
-        // ===============================
+        // =====================================
         // 1. CACHE
-        // ===============================
+        // =====================================
 
         const cached =
             this.container
@@ -31,9 +35,9 @@ export class PlanningEngine {
 
         console.log("🆕 Cache Miss");
 
-        // ===============================
+        // =====================================
         // 2. TEMPLATE
-        // ===============================
+        // =====================================
 
         const template =
             this.container
@@ -55,65 +59,81 @@ export class PlanningEngine {
 
         }
 
-        // ===============================
-        // 3. KNOWLEDGE SERVICES
-        // ===============================
+        // =====================================
+        // 3. KNOWLEDGE
+        // =====================================
 
-        const railwayContext =
+        const railway =
             await this.container
                 .knowledgeRepository
                 .railwayService
                 .plan(request);
 
-        const hotelContext =
+        const hotel =
             await this.container
                 .knowledgeRepository
                 .hotelService
                 .plan(request);
 
-        const foodContext =
+        const food =
             await this.container
                 .knowledgeRepository
                 .foodService
                 .plan(request);
 
-        // ===============================
-        // 4. BUILD CONTEXT
-        // ===============================
+        const tours =
+            await this.container
+                .knowledgeRepository
+                .tourService
+                .plan(request);
+
+        // =====================================
+        // 4. METADATA
+        // =====================================
+
+        const metadata: PlanningMetadata = {
+
+            plannerVersion: "3.4.0",
+
+            generatedAt: new Date(),
+
+            locale: "vi-VN",
+
+            currency: "VND",
+
+            aiProvider: "PlanningEngine",
+
+            model: "RuleEngine"
+
+        };
+
+        // =====================================
+        // 5. BUILD CONTEXT
+        // =====================================
 
         const context: PlanningContext = {
 
             request,
 
-            railway: railwayContext,
+            railway,
 
-            hotel: hotelContext,
+            hotel,
 
-            food: foodContext,
+            food,
 
-            tours: [],
+            tours,
 
             budget: undefined,
 
             affiliate: undefined,
 
-            metadata: {
-
-                plannerVersion: "1.0.0",
-
-                generatedAt: new Date(),
-
-                locale: "vi-VN",
-
-                currency: "VND",
-
-            },
+            metadata
 
         };
 
-        // ===============================
-        // 5. SAVE CACHE
-        // ===============================
+        // =====================================
+        // 6. SAVE CACHE
+        // =====================================
 
         this.container
             .cacheManager

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "poi-001",
+    "city": "Đà Nẵng",
+    "name": "Bà Nà Hills",
+    "category": "Attraction",
+    "duration": "6 giờ",
+    "estimatedPrice": 950000,
+    "address": "Hòa Ninh, Hòa Vang",
+    "openingHours": "08:00-17:00",
+    "tags": [
+      "gia đình",
+      "thiên nhiên",
+      "núi"
+    ]
+  },
+  {
+    "id": "poi-002",
+    "city": "Đà Nẵng",
+    "name": "Ngũ Hành Sơn",
+    "category": "Attraction",
+    "duration": "3 giờ",
+    "estimatedPrice": 40000,
+    "address": "81 Huyền Trân Công Chúa",
+    "openingHours": "07:00-17:30",
+    "tags": [
+      "di sản",
+      "tâm linh",
+      "checkin"
+    ]
+  },
+  {
+    "id": "poi-003",
+    "city": "Đà Nẵng",
+    "name": "Bảo tàng Điêu khắc Chăm",
+    "category": "Museum",
+    "duration": "2 giờ",
+    "estimatedPrice": 60000,
+    "address": "02 Tháng 9",
+    "openingHours": "07:00-17:00",
+    "tags": [
+      "văn hóa",
+      "lịch sử"
+    ]
+  }
+]
