@@ -3,12 +3,14 @@ import { HotelRepository } from "../repositories/hotel.repository";
 import { FoodRepository } from "../repositories/food.repository";
 import { TourRepository } from "../repositories/tour.repository";
 import { BudgetRepository } from "../repositories/budget.repository";
+import { AffiliateRepository } from "../repositories/affiliate.repository";
 
 import { RailwayService } from "./services/railway.service";
 import { HotelService } from "./services/hotel.service";
 import { FoodService } from "./services/food.service";
 import { TourService } from "./services/tour.service";
 import { BudgetService } from "./services/budget.service";
+import { AffiliateService } from "./services/affiliate.service";
 
 export class KnowledgeRepository {
 
@@ -22,6 +24,8 @@ export class KnowledgeRepository {
 
     readonly budgetService: BudgetService;
 
+    readonly affiliateService: AffiliateService;
+
     constructor(
 
         railwayRepository: RailwayRepository,
@@ -32,34 +36,29 @@ export class KnowledgeRepository {
 
         tourRepository: TourRepository,
 
-        budgetRepository: BudgetRepository
+        budgetRepository: BudgetRepository,
+
+        affiliateRepository: AffiliateRepository
 
     ) {
 
         this.railwayService =
-            new RailwayService(
-                railwayRepository
-            );
+            new RailwayService(railwayRepository);
 
         this.hotelService =
-            new HotelService(
-                hotelRepository
-            );
+            new HotelService(hotelRepository);
 
         this.foodService =
-            new FoodService(
-                foodRepository
-            );
+            new FoodService(foodRepository);
 
         this.tourService =
-            new TourService(
-                tourRepository
-            );
+            new TourService(tourRepository);
 
         this.budgetService =
-            new BudgetService(
-                budgetRepository
-            );
+            new BudgetService(budgetRepository);
+
+        this.affiliateService =
+            new AffiliateService(affiliateRepository);
 
     }
 

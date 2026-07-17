@@ -94,7 +94,7 @@ export class PlanningEngine {
 
         const metadata: PlanningMetadata = {
 
-            plannerVersion: "3.5.0",
+            plannerVersion: "3.6.0",
 
             generatedAt: new Date(),
 
@@ -143,19 +143,31 @@ export class PlanningEngine {
                 .plan(partialContext);
 
         // =====================================
-        // 7. FINAL CONTEXT
+        // 7. AFFILIATE
+        // =====================================
+
+        const affiliate =
+            await this.container
+                .knowledgeRepository
+                .affiliateService
+                .plan(partialContext);
+
+        // =====================================
+        // 8. FINAL CONTEXT
         // =====================================
 
         const context: PlanningContext = {
 
             ...partialContext,
 
-            budget
+            budget,
+
+            affiliate
 
         };
 
         // =====================================
-        // 8. SAVE CACHE
+        // 9. SAVE CACHE
         // =====================================
 
         this.container
