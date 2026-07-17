@@ -1,4 +1,5 @@
 import { PlanningRequest } from "./models/planning-request.model";
+
 import {
     PlanningContext,
     PlanningMetadata
@@ -93,7 +94,7 @@ export class PlanningEngine {
 
         const metadata: PlanningMetadata = {
 
-            plannerVersion: "3.4.0",
+            plannerVersion: "3.5.0",
 
             generatedAt: new Date(),
 
@@ -108,10 +109,10 @@ export class PlanningEngine {
         };
 
         // =====================================
-        // 5. BUILD CONTEXT
+        // 5. BUILD PARTIAL CONTEXT
         // =====================================
 
-        const context: PlanningContext = {
+        const partialContext: PlanningContext = {
 
             request,
 
@@ -132,7 +133,29 @@ export class PlanningEngine {
         };
 
         // =====================================
-        // 6. SAVE CACHE
+        // 6. BUDGET
+        // =====================================
+
+        const budget =
+            await this.container
+                .knowledgeRepository
+                .budgetService
+                .plan(partialContext);
+
+        // =====================================
+        // 7. FINAL CONTEXT
+        // =====================================
+
+        const context: PlanningContext = {
+
+            ...partialContext,
+
+            budget
+
+        };
+
+        // =====================================
+        // 8. SAVE CACHE
         // =====================================
 
         this.container

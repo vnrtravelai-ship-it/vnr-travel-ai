@@ -2,12 +2,14 @@ import { RailwayRepository } from "../repositories/railway.repository";
 import { HotelRepository } from "../repositories/hotel.repository";
 import { FoodRepository } from "../repositories/food.repository";
 import { TourRepository } from "../repositories/tour.repository";
+import { BudgetRepository } from "../repositories/budget.repository";
 import { TemplateRepository } from "../repositories/template.repository";
 
 import { RailwayProvider } from "../providers/railway/railway.provider";
 import { HotelProvider } from "../providers/hotel/hotel.provider";
 import { FoodProvider } from "../providers/food/food.provider";
 import { TourProvider } from "../providers/tour/tour.provider";
+import { BudgetProvider } from "../providers/budget/budget.provider";
 
 import { PlanningCacheManager } from "../cache/managers/planning-cache.manager";
 
@@ -29,6 +31,8 @@ export class ApplicationContainer {
 
     readonly tourProvider: TourProvider;
 
+    readonly budgetProvider: BudgetProvider;
+
     // =====================================
     // Repositories
     // =====================================
@@ -40,6 +44,8 @@ export class ApplicationContainer {
     readonly foodRepository: FoodRepository;
 
     readonly tourRepository: TourRepository;
+
+    readonly budgetRepository: BudgetRepository;
 
     readonly templateRepository: TemplateRepository;
 
@@ -69,6 +75,9 @@ export class ApplicationContainer {
         this.tourProvider =
             new TourProvider();
 
+        this.budgetProvider =
+            new BudgetProvider();
+
         // =====================================
         // Repositories
         // =====================================
@@ -93,6 +102,9 @@ export class ApplicationContainer {
                 this.tourProvider
             );
 
+        this.budgetRepository =
+            new BudgetRepository();
+
         this.templateRepository =
             new TemplateRepository();
 
@@ -116,7 +128,9 @@ export class ApplicationContainer {
 
                 this.foodRepository,
 
-                this.tourRepository
+                this.tourRepository,
+
+                this.budgetRepository
 
             );
 

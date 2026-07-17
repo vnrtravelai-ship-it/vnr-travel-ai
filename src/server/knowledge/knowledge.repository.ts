@@ -2,17 +2,15 @@ import { RailwayRepository } from "../repositories/railway.repository";
 import { HotelRepository } from "../repositories/hotel.repository";
 import { FoodRepository } from "../repositories/food.repository";
 import { TourRepository } from "../repositories/tour.repository";
+import { BudgetRepository } from "../repositories/budget.repository";
 
 import { RailwayService } from "./services/railway.service";
 import { HotelService } from "./services/hotel.service";
 import { FoodService } from "./services/food.service";
 import { TourService } from "./services/tour.service";
+import { BudgetService } from "./services/budget.service";
 
 export class KnowledgeRepository {
-
-    // =====================================
-    // Services
-    // =====================================
 
     readonly railwayService: RailwayService;
 
@@ -22,6 +20,8 @@ export class KnowledgeRepository {
 
     readonly tourService: TourService;
 
+    readonly budgetService: BudgetService;
+
     constructor(
 
         railwayRepository: RailwayRepository,
@@ -30,44 +30,35 @@ export class KnowledgeRepository {
 
         foodRepository: FoodRepository,
 
-        tourRepository: TourRepository
+        tourRepository: TourRepository,
+
+        budgetRepository: BudgetRepository
 
     ) {
-
-        // =====================================
-        // Railway
-        // =====================================
 
         this.railwayService =
             new RailwayService(
                 railwayRepository
             );
 
-        // =====================================
-        // Hotel
-        // =====================================
-
         this.hotelService =
             new HotelService(
                 hotelRepository
             );
-
-        // =====================================
-        // Food
-        // =====================================
 
         this.foodService =
             new FoodService(
                 foodRepository
             );
 
-        // =====================================
-        // Tour
-        // =====================================
-
         this.tourService =
             new TourService(
                 tourRepository
+            );
+
+        this.budgetService =
+            new BudgetService(
+                budgetRepository
             );
 
     }
