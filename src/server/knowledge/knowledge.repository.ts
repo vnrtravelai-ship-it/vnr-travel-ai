@@ -12,6 +12,7 @@ import { TourService } from "./services/tour.service";
 import { BudgetService } from "./services/budget.service";
 import { AffiliateService } from "./services/affiliate.service";
 import { ItineraryService } from "./services/itinerary.service";
+import { SchedulerService } from "./services/scheduler.service";
 
 export class KnowledgeRepository {
 
@@ -26,6 +27,8 @@ export class KnowledgeRepository {
     readonly budgetService: BudgetService;
 
     readonly affiliateService: AffiliateService;
+
+    readonly schedulerService: SchedulerService;
 
     readonly itineraryService: ItineraryService;
 
@@ -74,6 +77,9 @@ export class KnowledgeRepository {
             new AffiliateService(
                 affiliateRepository
             );
+
+        this.schedulerService =
+            new SchedulerService();
 
         this.itineraryService =
             new ItineraryService();

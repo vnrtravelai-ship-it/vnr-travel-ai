@@ -10,7 +10,7 @@ from "../core/application.container";
 
 export class PlanningEngine {
 
-    private container =
+    private readonly container =
         ApplicationContainer.getInstance();
 
     async buildContext(
@@ -94,7 +94,7 @@ export class PlanningEngine {
 
         const metadata: PlanningMetadata = {
 
-            plannerVersion: "3.7.0",
+            plannerVersion: "3.8.0",
 
             generatedAt: new Date(),
 
@@ -109,10 +109,10 @@ export class PlanningEngine {
         };
 
         // =====================================
-        // 5. BUILD PARTIAL CONTEXT
+        // 5. BUILD BASE CONTEXT
         // =====================================
 
-        const partialContext: PlanningContext = {
+        const baseContext: PlanningContext = {
 
             request,
 
@@ -142,9 +142,9 @@ export class PlanningEngine {
             await this.container
                 .knowledgeRepository
                 .itineraryService
-                .plan(partialContext);
+                .plan(baseContext);
 
-        partialContext.itinerary =
+        baseContext.itinerary =
             itinerary;
 
         // =====================================
@@ -155,7 +155,7 @@ export class PlanningEngine {
             await this.container
                 .knowledgeRepository
                 .budgetService
-                .plan(partialContext);
+                .plan(baseContext);
 
         // =====================================
         // 8. AFFILIATE
@@ -165,7 +165,7 @@ export class PlanningEngine {
             await this.container
                 .knowledgeRepository
                 .affiliateService
-                .plan(partialContext);
+                .plan(baseContext);
 
         // =====================================
         // 9. FINAL CONTEXT
@@ -173,7 +173,7 @@ export class PlanningEngine {
 
         const context: PlanningContext = {
 
-            ...partialContext,
+            ...baseContext,
 
             budget,
 

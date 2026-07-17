@@ -1,9 +1,6 @@
 import { PlanningContext } from "../../planning/models/planning-context.model";
-
 import { DayPlan } from "../../itinerary/models/day-plan.model";
-
-import { ItineraryBuilder }
-from "../../itinerary/itinerary.builder";
+import { ItineraryBuilder } from "../../itinerary/itinerary.builder";
 
 export class ItineraryService {
 
@@ -18,12 +15,9 @@ export class ItineraryService {
             "🗓 Building itinerary..."
         );
 
-        const itinerary =
-            await this.builder.build(
-                context
-            );
-
-        return itinerary;
+        return await this.builder.build(
+            context
+        );
 
     }
 

@@ -1,11 +1,17 @@
-import { PlanningContext } from "../../planning/models/planning-context.model";
-import { ScheduleSlot } from "../models/schedule-slot.model";
+import { PlanningContext }
+from "../../planning/models/planning-context.model";
+
+import { ScheduleSlot }
+from "../models/schedule-slot.model";
 
 export class TrainArrivalRule {
 
     apply(
+
         context: PlanningContext,
+
         schedule: ScheduleSlot[]
+
     ): ScheduleSlot[] {
 
         if (!context.railway) {
@@ -13,6 +19,12 @@ export class TrainArrivalRule {
             return schedule;
 
         }
+
+        const railway =
+            context.railway;
+
+        const arrivalTime =
+            railway.arrivalTime;
 
         schedule.push({
 
@@ -22,24 +34,26 @@ export class TrainArrivalRule {
 
             type: "TRAIN",
 
-            title: `${context.railway.trainCode}`,
+            title:
+                `Đến ga ${railway.arrivalStation}`,
 
             description:
-                `${context.railway.departureStation} → ${context.railway.arrivalStation}`,
+
+                `${railway.trainCode}: ${railway.departureStation} → ${railway.arrivalStation}`,
 
             startTime:
-                context.railway.arrivalTime,
+                arrivalTime,
 
             endTime:
-                context.railway.arrivalTime,
+                arrivalTime,
 
             durationMinutes: 0,
 
             location:
-                context.railway.arrivalStation,
+                railway.arrivalStation,
 
             estimatedCost:
-                context.railway.estimatedPrice,
+                railway.estimatedPrice,
 
             order: 1,
 
@@ -48,19 +62,28 @@ export class TrainArrivalRule {
             metadata: {
 
                 trainCode:
-                    context.railway.trainCode,
+                    railway.trainCode,
 
                 departureStation:
-                    context.railway.departureStation,
+                    railway.departureStation,
 
                 arrivalStation:
-                    context.railway.arrivalStation,
+                    railway.arrivalStation,
+
+                departureTime:
+                    railway.departureTime,
+
+                arrivalTime:
+                    railway.arrivalTime,
+
+                seatType:
+                    railway.seatType,
 
                 distanceKm:
-                    context.railway.distanceKm,
+                    railway.distanceKm,
 
                 duration:
-                    context.railway.duration
+                    railway.duration
 
             }
 
