@@ -1,5 +1,8 @@
 import { PlanningRequest } from "./planning-request.model";
 
+import { DayPlan }
+from "../../itinerary/models/day-plan.model";
+
 /* =====================================================
  * Railway
  * ===================================================== */
@@ -189,6 +192,8 @@ export interface PlanningContext {
     food?: FoodPlan;
 
     tours: TourPlan[];
+
+    itinerary: DayPlan[];
 
     budget?: BudgetPlan;
 

@@ -124,6 +124,8 @@ export class PlanningEngine {
 
             tours,
 
+            itinerary: [],
+
             budget: undefined,
 
             affiliate: undefined,
