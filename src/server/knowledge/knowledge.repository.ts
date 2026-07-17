@@ -11,6 +11,7 @@ import { FoodService } from "./services/food.service";
 import { TourService } from "./services/tour.service";
 import { BudgetService } from "./services/budget.service";
 import { AffiliateService } from "./services/affiliate.service";
+import { ItineraryService } from "./services/itinerary.service";
 
 export class KnowledgeRepository {
 
@@ -25,6 +26,8 @@ export class KnowledgeRepository {
     readonly budgetService: BudgetService;
 
     readonly affiliateService: AffiliateService;
+
+    readonly itineraryService: ItineraryService;
 
     constructor(
 
@@ -43,22 +46,37 @@ export class KnowledgeRepository {
     ) {
 
         this.railwayService =
-            new RailwayService(railwayRepository);
+            new RailwayService(
+                railwayRepository
+            );
 
         this.hotelService =
-            new HotelService(hotelRepository);
+            new HotelService(
+                hotelRepository
+            );
 
         this.foodService =
-            new FoodService(foodRepository);
+            new FoodService(
+                foodRepository
+            );
 
         this.tourService =
-            new TourService(tourRepository);
+            new TourService(
+                tourRepository
+            );
 
         this.budgetService =
-            new BudgetService(budgetRepository);
+            new BudgetService(
+                budgetRepository
+            );
 
         this.affiliateService =
-            new AffiliateService(affiliateRepository);
+            new AffiliateService(
+                affiliateRepository
+            );
+
+        this.itineraryService =
+            new ItineraryService();
 
     }
 

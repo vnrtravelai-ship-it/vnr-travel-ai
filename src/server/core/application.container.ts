@@ -112,10 +112,10 @@ export class ApplicationContainer {
             );
 
         this.budgetRepository =
-            new BudgetRepository();
+    new BudgetRepository();
 
         this.affiliateRepository =
-            new AffiliateRepository();
+    new AffiliateRepository();
 
         this.templateRepository =
             new TemplateRepository();

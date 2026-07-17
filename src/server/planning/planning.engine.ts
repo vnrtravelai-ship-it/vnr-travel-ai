@@ -94,7 +94,7 @@ export class PlanningEngine {
 
         const metadata: PlanningMetadata = {
 
-            plannerVersion: "3.6.0",
+            plannerVersion: "3.7.0",
 
             generatedAt: new Date(),
 
@@ -135,7 +135,20 @@ export class PlanningEngine {
         };
 
         // =====================================
-        // 6. BUDGET
+        // 6. BUILD ITINERARY
+        // =====================================
+
+        const itinerary =
+            await this.container
+                .knowledgeRepository
+                .itineraryService
+                .plan(partialContext);
+
+        partialContext.itinerary =
+            itinerary;
+
+        // =====================================
+        // 7. BUDGET
         // =====================================
 
         const budget =
@@ -145,7 +158,7 @@ export class PlanningEngine {
                 .plan(partialContext);
 
         // =====================================
-        // 7. AFFILIATE
+        // 8. AFFILIATE
         // =====================================
 
         const affiliate =
@@ -155,7 +168,7 @@ export class PlanningEngine {
                 .plan(partialContext);
 
         // =====================================
-        // 8. FINAL CONTEXT
+        // 9. FINAL CONTEXT
         // =====================================
 
         const context: PlanningContext = {
@@ -169,7 +182,7 @@ export class PlanningEngine {
         };
 
         // =====================================
-        // 9. SAVE CACHE
+        // 10. SAVE CACHE
         // =====================================
 
         this.container
