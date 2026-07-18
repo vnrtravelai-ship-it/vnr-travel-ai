@@ -1,209 +1,749 @@
 # ARCHITECTURE.md
 
+# ==========================================================
 # VNR Travel AI
+# System Architecture
+# ==========================================================
 
-## Backend Architecture
+Version
 
-Version: 1.0
+3.8
 
-Status: Stable
+Status
+
+Current Stable Architecture
+
+Architecture Style
+
+Clean Architecture
+
+Domain Driven Design (DDD)
+
+Rule Engine + AI Assisted Planning
+
+Last Updated
+
+2026-07-17
+
+Git Tag
+
+v3.8-scheduler-rules
 
 ---
 
-# Purpose
+# Vision
 
-This document defines the permanent backend architecture of VNR Travel AI.
+VNR Travel AI is an intelligent travel planning platform specialized for Vietnam Railway tourism.
 
-All future development must follow this architecture.
+The architecture separates:
+
+- Business Rules
+- Knowledge
+- Planning
+- AI
+- API
+
+Business logic MUST always remain deterministic.
+
+AI MUST never replace business rules.
 
 ---
 
-# High-Level Architecture
+# Architecture Overview
 
-```
-React Frontend
-        │
-        ▼
+                    Client
+                       │
+                REST Controllers
+                       │
+                  Service Layer
+                       │
+                Planning Engine
+                       │
+         ┌─────────────┴─────────────┐
+         │                           │
+ Knowledge Repository          Template Repository
+         │
+         ▼
+ Railway / Hotel / Food / Tour
+         │
+         ▼
+ PlanningContext (Base)
+         │
+         ▼
+ Scheduler Engine
+         │
+         ▼
+ Scheduler Rules
+         │
+         ▼
+ Scheduler Service
+         │
+         ▼
+ Itinerary Builder
+         │
+         ▼
+ Budget Planner
+         │
+         ▼
+ Affiliate Planner
+         │
+         ▼
+ PlanningContext (Final)
+         │
+         ▼
+ Gemini Provider
+         │
+         ▼
+ JSON Response
+
+---
+
+# Layered Architecture
+
+Presentation Layer
+
+Responsibilities
+
 REST API
-        │
-        ▼
-Express Server
-        │
-        ▼
-Routes
-        │
-        ▼
+
 Controllers
-        │
-        ▼
-Services
-        │
-        ▼
+
+Validation
+
+Response formatting
+
+Current Modules
+
+ChatController
+
+ItineraryController
+
+LeadsController
+
+ClicksController
+
+---
+
+Application Layer
+
+Responsibilities
+
+Business orchestration
+
+Planner execution
+
+Dependency injection
+
+Current Modules
+
+PlanningEngine
+
+ApplicationContainer
+
+CacheManager
+
+TemplateRepository
+
+---
+
+Knowledge Layer
+
+Responsibilities
+
+Retrieve domain knowledge
+
+Normalize data
+
+Provide planner input
+
+Current Services
+
+RailwayService
+
+HotelService
+
+FoodService
+
+TourService
+
+BudgetService
+
+AffiliateService
+
+SchedulerService
+
+ItineraryService
+
+---
+
+Repository Layer
+
+Responsibilities
+
+Read structured knowledge
+
+Current Repositories
+
+RailwayRepository
+
+HotelRepository
+
+FoodRepository
+
+TourRepository
+
+BudgetRepository
+
+AffiliateRepository
+
+TemplateRepository
+
+---
+
+Planning Layer
+
+Responsibilities
+
+Generate deterministic travel plans
+
+Main Components
+
+PlanningRequest
+
+PlanningContext
+
+TravelIntent
+
+PlanningMetadata
+
+Planner Pipeline
+
+Rule Engine
+
+---
+
+Scheduler Layer
+
+Responsibilities
+
+Convert planning information into executable timeline.
+
+Main Components
+
+SchedulerEngine
+
+SchedulerService
+
+ScheduleSlot
+
+ScheduleType
+
+---
+
+Current Scheduler Rules
+
+TrainArrivalRule
+
+Purpose
+
+Insert railway arrival event.
+
+HotelCheckinRule
+
+Purpose
+
+Insert hotel check-in.
+
+MealRule
+
+Purpose
+
+Insert
+
+Breakfast
+
+Lunch
+
+Dinner
+
+Coffee
+
+OpenHourRule
+
+Purpose
+
+Ensure attractions are visited during opening hours.
+
+DistanceRule
+
+Purpose
+
+Optimize activity order by travel distance.
+
+---
+
+Itinerary Layer
+
+Responsibilities
+
+Convert schedule slots into user itinerary.
+
+Components
+
+ItineraryBuilder
+
+Activity
+
+DayPlan
+
+Output
+
+PlanningContext.itinerary
+
+---
+
+Budget Layer
+
+Responsibilities
+
+Estimate total travel cost.
+
+Includes
+
+Railway
+
+Hotel
+
+Meals
+
+Tours
+
+Transport
+
+Shopping
+
+Output
+
+BudgetPlan
+
+---
+
+Affiliate Layer
+
+Responsibilities
+
+Select booking providers.
+
+Current Providers
+
+Baolau
+
+Traveloka
+
+Agoda
+
+Klook
+
+Official Railway
+
+Selection is rule-driven.
+
+---
+
+AI Layer
+
+Responsibilities
+
+Natural language generation only.
+
+Input
+
+PlanningContext (Final)
+
+Output
+
+Markdown
+
+JSON
+
+Conversation
+
+AI MUST NOT
+
+Choose train
+
+Choose hotel
+
+Calculate budget
+
+Arrange schedule
+
+Resolve business rules
+
+---
+
+Planning Flow
+
+PlanningRequest
+
+↓
+
+Knowledge Services
+
+↓
+
+PlanningContext (Base)
+
+↓
+
+SchedulerEngine
+
+↓
+
+TrainArrivalRule
+
+↓
+
+HotelCheckinRule
+
+↓
+
+MealRule
+
+↓
+
+OpenHourRule
+
+↓
+
+DistanceRule
+
+↓
+
+SchedulerService
+
+↓
+
+ItineraryBuilder
+
+↓
+
+PlanningContext.itinerary
+
+↓
+
+BudgetService
+
+↓
+
+AffiliateService
+
+↓
+
+PlanningContext (Final)
+
+↓
+
+GeminiProvider
+
+↓
+
+REST API
+
+↓
+
+JSON
+
+---
+
+Dependency Graph
+
+ApplicationContainer
+
+│
+
+├── CacheManager
+
+├── TemplateRepository
+
+├── KnowledgeRepository
+
+│
+
+├── RailwayService
+
+├── HotelService
+
+├── FoodService
+
+├── TourService
+
+├── SchedulerService
+
+├── ItineraryService
+
+├── BudgetService
+
+└── AffiliateService
+
+---
+
+Knowledge Repository
+
+KnowledgeRepository
+
+│
+
+├── RailwayService
+
+├── HotelService
+
+├── FoodService
+
+├── TourService
+
+├── SchedulerService
+
+├── ItineraryService
+
+├── BudgetService
+
+└── AffiliateService
+
+---
+
+Planning Context Evolution
+
+Phase 1
+
+PlanningRequest
+
+↓
+
+Knowledge Plans
+
+↓
+
+PlanningContext(Base)
+
+Contains
+
+Request
+
+Railway
+
+Hotel
+
+Food
+
+Tours
+
+Metadata
+
+Phase 2
+
+Scheduler
+
+↓
+
+DayPlan
+
+↓
+
+PlanningContext.itinerary
+
+Phase 3
+
+Budget
+
+Affiliate
+
+↓
+
+PlanningContext(Final)
+
+---
+
+Project Structure
+
+src/server
+
+cache/
+
+controllers/
+
+core/
+
+itinerary/
+
+knowledge/
+
+planning/
+
+providers/
+
+repositories/
+
+routes/
+
+scheduler/
+
+services/
+
+---
+
+Current Status
+
+Completed
+
+ApplicationContainer
+
+KnowledgeRepository
+
+PlanningEngine
+
+SchedulerEngine
+
+SchedulerService
+
+Scheduler Rules
+
+ItineraryBuilder
+
+Budget Planner
+
+Affiliate Planner
+
+PlanningContext
+
+Gemini Provider
+
+REST API
+
+---
+
+Technical Principles
+
+Business Rules First
+
+AI Second
+
+Rule Driven
+
+Deterministic Planning
+
+Clean Architecture
+
+Dependency Injection
+
+DDD
+
+Independent Modules
+
+Testable Services
+
+Reusable Components
+
+---
+
+Future Architecture (v3.9)
+
+PlanningContext(Base)
+
+↓
+
+Scheduler
+
+↓
+
+AI Optimizer
+
+↓
+
+Conflict Resolver
+
+↓
+
+Recommendation Ranking
+
+↓
+
+Budget Refinement
+
+↓
+
+Affiliate Optimization
+
+↓
+
+PlanningContext(Final)
+
+↓
+
+Gemini
+
+---
+
+Roadmap
+
+Completed
+
+v3.0 Core Planning
+
+v3.1 Railway
+
+v3.2 Hotel
+
+v3.3 Food
+
+v3.4 Tour
+
+v3.5 Budget
+
+v3.6 Affiliate
+
+v3.7 Itinerary
+
+v3.8 Scheduler
+
+Next
+
+v3.9 AI Optimizer
+
+Future
+
+v4.0 Multi-city Planning
+
+v4.1 Real-time Railway
+
+v4.2 Adaptive Recommendation
+
+v5.0 Autonomous Travel AI
+
+---
+
+Documentation Status
+
+Architecture Version
+
+3.8
+
+Documentation Status
+
+UP TO DATE
+
+Synchronized With
+
 Planning Engine
-        │
-        ▼
-Providers
-        │
-        ▼
-External Systems
-```
 
----
+Scheduler Engine
 
-# Layer Responsibilities
+Knowledge Repository
 
-## Frontend
+ApplicationContainer
 
-Responsible for:
+PlanningContext
 
-- User Interface
-- User Interaction
-- API Calls
+Git Tag
 
-Never contains business logic.
-
----
-
-## Express Server
-
-Responsible for:
-
-- Application startup
-- Middleware
-- Route registration
-- Static hosting
-- Vite integration
-
-Never contains business logic.
-
----
-
-## Routes
-
-Responsible for:
-
-- API endpoint registration
-- Route grouping
-- Middleware binding
-
-Routes never contain business logic.
-
----
-
-## Controllers
-
-Responsible for:
-
-- Receive HTTP Request
-- Validate request
-- Call services
-- Return HTTP Response
-
-Controllers never implement business rules.
-
----
-
-## Services
-
-Responsible for:
-
-- Coordinate application flow
-- Call Planning Engine
-- Call Providers
-- Combine results
-
-Services should remain lightweight.
-
----
-
-## Planning Engine
-
-The Planning Engine is the business core of VNR Travel AI.
-
-Responsibilities include:
-
-- Railway itinerary planning
-- Travel decision making
-- Multi-modal transportation
-- Hotel planning
-- Tour planning
-- Food recommendation
-- Regional specialties
-- Affiliate orchestration
-- Rule execution
-
-Business rules belong exclusively to this layer.
-
----
-
-## Providers
-
-Responsible for integrating external services.
-
-Examples:
-
-- Gemini
-- OpenAI
-- Claude
-- Firebase
-- Baolau
-- Agoda
-- Traveloka
-- Klook
-
-Providers never contain business logic.
-
----
-
-## External Systems
-
-Examples:
-
-- Firebase
-- Gemini API
-- Payment Gateway
-- Affiliate Platforms
-
----
-
-# Dependency Direction
-
-Dependencies always flow downward.
-
-```
-server
-    ↓
-routes
-    ↓
-controllers
-    ↓
-services
-    ↓
-planning
-    ↓
-providers
-    ↓
-external systems
-```
-
-Reverse dependencies are prohibited.
-
----
-
-# Architecture Goals
-
-This architecture supports:
-
-- Scalability
-- Maintainability
-- AI independence
-- International expansion
-- Long-term evolution
-
----
-
-# Long-term Vision
-
-The architecture is designed to support the Product Vision:
-
-> "An international AI railway travel platform centered on rail transport, integrating multi-modal transportation and a complete travel service ecosystem into one unified journey."
+v3.8-scheduler-rules
