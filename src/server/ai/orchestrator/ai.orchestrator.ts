@@ -16,6 +16,9 @@ import { ConstraintResult }
 import { ReflectionSuggestion }
     from "../../optimizer/reflection.engine";
 
+import { RetryEngine }
+    from "../retry/retry.engine";
+
 export class AIOrchestrator {
 
     private readonly provider =
@@ -26,6 +29,9 @@ export class AIOrchestrator {
 
     private readonly parser =
         new ResponseParser();
+
+    private readonly retryEngine =
+        new RetryEngine();
 
     async generate<T>(
 
@@ -48,16 +54,38 @@ export class AIOrchestrator {
 
             );
 
-        const response =
-            await this.provider.generate(
+        const retry =
+            await this.retryEngine.execute(
 
-                payload
+                () =>
+
+                    this.provider.generate(
+
+                        payload
+
+                    )
 
             );
 
+        if (
+
+            !retry.success ||
+
+            !retry.result
+
+        ) {
+
+            throw new Error(
+
+                "AI generation failed after retry."
+
+            );
+
+        }
+
         return this.parser.parse<T>(
 
-            response
+            retry.result
 
         );
 
