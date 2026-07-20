@@ -13,119 +13,68 @@ export class TransferRule
     readonly name =
         "TransferRule";
 
-    /**
-     * Minimum transfer time (minutes)
-     */
-    private readonly MIN_TRANSFER_MINUTES = 15;
-
     validate(
         context: PlanningContext
     ): ConstraintError[] {
 
         const errors: ConstraintError[] = [];
 
-        const schedule =
-            context.schedule;
+        const itinerary =
+            context.itinerary;
 
         if (
-            !schedule ||
-            schedule.length <= 1
+
+            !itinerary ||
+            itinerary.length === 0
+
         ) {
 
             return errors;
 
         }
 
-        const sorted =
-            [...schedule].sort(
-
-                (a, b) =>
-
-                    new Date(a.startTime).getTime()
-
-                    -
-
-                    new Date(b.startTime).getTime()
-
-            );
+        /**
+         * Sprint 3.9:
+         * DayPlan hiện chưa có:
+         *  - startTime
+         *  - endTime
+         *  - location
+         *
+         * Vì vậy chưa thể kiểm tra thời gian chuyển tiếp.
+         *
+         * Rule này được giữ lại như một extension point.
+         * Sprint 4 sẽ bổ sung:
+         *  - Activity[]
+         *  - TimeSlot
+         *  - Transfer validation
+         */
 
         for (
 
             let i = 0;
 
-            i < sorted.length - 1;
+            i < itinerary.length;
 
             i++
 
         ) {
 
-            const current =
-                sorted[i];
-
-            const next =
-                sorted[i + 1];
+            const day =
+                itinerary[i];
 
             if (
 
-                !current.endTime ||
-                !next.startTime
-
-            ) {
-
-                continue;
-
-            }
-
-            const currentEnd =
-                new Date(current.endTime);
-
-            const nextStart =
-                new Date(next.startTime);
-
-            const transferMinutes =
-
-                (
-                    nextStart.getTime()
-
-                    -
-
-                    currentEnd.getTime()
-
-                ) / 60000;
-
-            /**
-             * Ignore if same location
-             */
-
-            if (
-
-                current.location &&
-                next.location &&
-                current.location === next.location
-
-            ) {
-
-                continue;
-
-            }
-
-            /**
-             * Not enough transfer time
-             */
-
-            if (
-
-                transferMinutes < this.MIN_TRANSFER_MINUTES
+                day.day <= 0
 
             ) {
 
                 errors.push({
 
                     code:
-                        "TRANSFER_TIME_TOO_SHORT",
+                        "INVALID_ITINERARY_DAY",
 
                     message:
-                        "Insufficient transfer time between activities.",
+                        "Invalid itinerary day.",
 
                     severity:
                         "ERROR",
@@ -134,33 +83,12 @@ export class TransferRule
                         "TRANSFER",
 
                     field:
-                        `schedule[${i}]`,
+                        `itinerary[${i}].day`,
 
                     details: {
 
-                        from:
-
-                            current.location,
-
-                        to:
-
-                            next.location,
-
-                        availableMinutes:
-
-                            transferMinutes,
-
-                        requiredMinutes:
-
-                            this.MIN_TRANSFER_MINUTES,
-
-                        currentActivity:
-
-                            current.id,
-
-                        nextActivity:
-
-                            next.id
+                        day:
+                            day.day
 
                     }
 

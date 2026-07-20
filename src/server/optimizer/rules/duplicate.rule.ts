@@ -19,54 +19,38 @@ export class DuplicateRule
 
         const errors: ConstraintError[] = [];
 
-        const schedule =
-            context.schedule;
-
         if (
-            !schedule ||
-            schedule.length <= 1
+            !context.itinerary ||
+            context.itinerary.length <= 1
         ) {
 
             return errors;
 
         }
 
-        const idSet =
-            new Set<string>();
-
-        const activityKeySet =
-            new Set<string>();
+        const daySet =
+            new Set<number>();
 
         for (
-
             let i = 0;
-
-            i < schedule.length;
-
+            i < context.itinerary.length;
             i++
-
         ) {
 
-            const slot =
-                schedule[i];
-
-            /**
-             * Duplicate ID
-             */
+            const day =
+                context.itinerary[i];
 
             if (
-
-                idSet.has(slot.id)
-
+                daySet.has(day.day)
             ) {
 
                 errors.push({
 
                     code:
-                        "DUPLICATE_SCHEDULE_ID",
+                        "DUPLICATE_DAY",
 
                     message:
-                        "Duplicate schedule id detected.",
+                        "Duplicate itinerary day detected.",
 
                     severity:
                         "ERROR",
@@ -75,12 +59,12 @@ export class DuplicateRule
                         "DUPLICATE",
 
                     field:
-                        `schedule[${i}].id`,
+                        `itinerary[${i}].day`,
 
                     details: {
 
-                        id:
-                            slot.id
+                        day:
+                            day.day
 
                     }
 
@@ -90,76 +74,8 @@ export class DuplicateRule
 
             else {
 
-                idSet.add(
-                    slot.id
-                );
-
-            }
-
-            /**
-             * Duplicate Activity
-             */
-
-            const activityKey =
-
-                [
-
-                    slot.type,
-
-                    slot.title,
-
-                    slot.location,
-
-                    slot.startTime
-
-                ].join("|");
-
-            if (
-
-                activityKeySet.has(
-                    activityKey
-                )
-
-            ) {
-
-                errors.push({
-
-                    code:
-                        "DUPLICATE_ACTIVITY",
-
-                    message:
-                        "Duplicate activity detected.",
-
-                    severity:
-                        "WARNING",
-
-                    source:
-                        "DUPLICATE",
-
-                    field:
-                        `schedule[${i}]`,
-
-                    details: {
-
-                        title:
-                            slot.title,
-
-                        location:
-                            slot.location,
-
-                        startTime:
-                            slot.startTime
-
-                    }
-
-                });
-
-            }
-
-            else {
-
-                activityKeySet.add(
-                    activityKey
+                daySet.add(
+                    day.day
                 );
 
             }

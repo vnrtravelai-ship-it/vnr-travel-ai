@@ -19,57 +19,61 @@ export class ScheduleRule
 
         const errors: ConstraintError[] = [];
 
-        const schedule =
-            context.schedule;
-
         if (
-            !schedule ||
-            schedule.length <= 1
+            !context.itinerary ||
+            context.itinerary.length === 0
         ) {
 
-            return errors;
+            errors.push({
+
+                code:
+                    "ITINERARY_EMPTY",
+
+                message:
+                    "Itinerary is empty.",
+
+                severity:
+                    "ERROR",
+
+                source:
+                    "SCHEDULE",
+
+                field:
+                    "itinerary"
+
+            });
 
         }
 
-        const sorted =
-            [...schedule].sort(
-
-                (a, b) =>
-
-                    new Date(a.startTime).getTime()
-
-                    -
-
-                    new Date(b.startTime).getTime()
-
-            );
+        const daySet =
+            new Set<number>();
 
         for (
 
             let i = 0;
 
-            i < sorted.length;
+            i < context.itinerary.length;
 
             i++
 
         ) {
 
-            const current =
-                sorted[i];
+            const day =
+                context.itinerary[i];
 
-            // ============================
-            // Missing start time
-            // ============================
+            if (
 
-            if (!current.startTime) {
+                day.day <= 0
+
+            ) {
 
                 errors.push({
 
                     code:
-                        "SCHEDULE_START_TIME_MISSING",
+                        "INVALID_DAY",
 
                     message:
-                        "Activity start time is missing.",
+                        "Day index must be greater than zero.",
 
                     severity:
                         "ERROR",
@@ -78,148 +82,40 @@ export class ScheduleRule
                         "SCHEDULE",
 
                     field:
-                        `schedule[${i}].startTime`
+                        `itinerary[${i}].day`
 
                 });
 
             }
 
-            // ============================
-            // Missing end time
-            // ============================
-
-            if (!current.endTime) {
-
-                errors.push({
-
-                    code:
-                        "SCHEDULE_END_TIME_MISSING",
-
-                    message:
-                        "Activity end time is missing.",
-
-                    severity:
-                        "ERROR",
-
-                    source:
-                        "SCHEDULE",
-
-                    field:
-                        `schedule[${i}].endTime`
-
-                });
-
-            }
-
-            // ============================
-            // End before start
-            // ============================
-
             if (
 
-                current.startTime &&
-                current.endTime
-
-            ) {
-
-                const start =
-                    new Date(current.startTime);
-
-                const end =
-                    new Date(current.endTime);
-
-                if (
-
-                    end < start
-
-                ) {
-
-                    errors.push({
-
-                        code:
-                            "SCHEDULE_INVALID_DURATION",
-
-                        message:
-                            "Activity end time must be after start time.",
-
-                        severity:
-                            "ERROR",
-
-                        source:
-                            "SCHEDULE",
-
-                        field:
-                            `schedule[${i}]`
-
-                    });
-
-                }
-
-            }
-
-            // ============================
-            // Overlap
-            // ============================
-
-            if (
-
-                i === sorted.length - 1
-
-            ) {
-
-                continue;
-
-            }
-
-            const next =
-                sorted[i + 1];
-
-            const currentEnd =
-                new Date(current.endTime);
-
-            const nextStart =
-                new Date(next.startTime);
-
-            if (
-
-                currentEnd >
-
-                nextStart
+                daySet.has(day.day)
 
             ) {
 
                 errors.push({
 
                     code:
-                        "SCHEDULE_OVERLAP",
+                        "DUPLICATE_DAY",
 
                     message:
-                        "Activities overlap.",
+                        "Duplicate itinerary day.",
 
                     severity:
-                        "ERROR",
+                        "WARNING",
 
                     source:
                         "SCHEDULE",
 
                     field:
-                        `schedule[${i}]`,
-
-                    details: {
-
-                        current:
-
-                            current.id,
-
-                        next:
-
-                            next.id
-
-                    }
+                        `itinerary[${i}].day`
 
                 });
 
             }
+
+            daySet.add(day.day);
 
         }
 

@@ -28,19 +28,48 @@ export class HotelRule
 
         }
 
-        // =====================================
-        // Check-in time
-        // =====================================
+        if (
 
-        if (!hotel.checkInTime) {
+            !hotel.selectedHotel &&
+            hotel.recommendedHotels.length === 0
+
+        ) {
 
             errors.push({
 
                 code:
-                    "HOTEL_CHECKIN_TIME_MISSING",
+                    "HOTEL_NOT_FOUND",
 
                 message:
-                    "Hotel check-in time is missing.",
+                    "No hotel recommendation available.",
+
+                severity:
+                    "WARNING",
+
+                source:
+                    "HOTEL",
+
+                field:
+                    "hotel"
+
+            });
+
+        }
+
+        if (
+
+            hotel.selectedHotel &&
+            hotel.selectedHotel.priceFrom < 0
+
+        ) {
+
+            errors.push({
+
+                code:
+                    "HOTEL_INVALID_PRICE",
+
+                message:
+                    "Hotel price cannot be negative.",
 
                 severity:
                     "ERROR",
@@ -49,152 +78,9 @@ export class HotelRule
                     "HOTEL",
 
                 field:
-                    "hotel.checkInTime"
+                    "hotel.selectedHotel.priceFrom"
 
             });
-
-        }
-
-        // =====================================
-        // Check-out time
-        // =====================================
-
-        if (!hotel.checkOutTime) {
-
-            errors.push({
-
-                code:
-                    "HOTEL_CHECKOUT_TIME_MISSING",
-
-                message:
-                    "Hotel check-out time is missing.",
-
-                severity:
-                    "ERROR",
-
-                source:
-                    "HOTEL",
-
-                field:
-                    "hotel.checkOutTime"
-
-            });
-
-        }
-
-        // =====================================
-        // Check-in after train arrival
-        // =====================================
-
-        if (
-
-            context.railway?.arrivalTime &&
-            hotel.checkInTime
-
-        ) {
-
-            const arrival =
-                new Date(
-                    context.railway.arrivalTime
-                );
-
-            const checkIn =
-                new Date(
-                    hotel.checkInTime
-                );
-
-            if (
-                checkIn < arrival
-            ) {
-
-                errors.push({
-
-                    code:
-                        "HOTEL_CHECKIN_BEFORE_ARRIVAL",
-
-                    message:
-                        "Hotel check-in cannot occur before train arrival.",
-
-                    severity:
-                        "ERROR",
-
-                    source:
-                        "HOTEL",
-
-                    field:
-                        "hotel.checkInTime",
-
-                    details: {
-
-                        arrival:
-                            context.railway.arrivalTime,
-
-                        checkIn:
-                            hotel.checkInTime
-
-                    }
-
-                });
-
-            }
-
-        }
-
-        // =====================================
-        // Check-out after check-in
-        // =====================================
-
-        if (
-
-            hotel.checkInTime &&
-            hotel.checkOutTime
-
-        ) {
-
-            const checkIn =
-                new Date(
-                    hotel.checkInTime
-                );
-
-            const checkOut =
-                new Date(
-                    hotel.checkOutTime
-                );
-
-            if (
-                checkOut <= checkIn
-            ) {
-
-                errors.push({
-
-                    code:
-                        "HOTEL_INVALID_STAY_PERIOD",
-
-                    message:
-                        "Hotel check-out must be after check-in.",
-
-                    severity:
-                        "ERROR",
-
-                    source:
-                        "HOTEL",
-
-                    field:
-                        "hotel.checkOutTime",
-
-                    details: {
-
-                        checkIn:
-                            hotel.checkInTime,
-
-                        checkOut:
-                            hotel.checkOutTime
-
-                    }
-
-                });
-
-            }
 
         }
 

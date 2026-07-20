@@ -1,5 +1,6 @@
-import { ItineraryResult }
-    from "../types/itinerary-result.model";
+import {
+    PlanningContext
+} from "../planning/models/planning-context.model";
 
 export interface JsonValidationResult {
 
@@ -19,35 +20,38 @@ export class JsonValidator {
 
         if (!result) {
 
-            errors.push("Response is null.");
-
             return {
 
                 valid: false,
 
-                errors
+                errors: [
+
+                    "PlanningContext is null."
+
+                ]
 
             };
 
         }
 
-        const itinerary = result as Partial<ItineraryResult>;
+        const context =
+            result as Partial<PlanningContext>;
 
-        if (!itinerary.tripName) {
+        if (!context.request) {
 
             errors.push(
 
-                "Missing tripName."
+                "Missing request."
 
             );
 
         }
 
-        if (!itinerary.days) {
+        if (!context.itinerary) {
 
             errors.push(
 
-                "Missing days."
+                "Missing itinerary."
 
             );
 
@@ -55,34 +59,59 @@ export class JsonValidator {
 
         if (
 
-            itinerary.days &&
-            !Array.isArray(itinerary.days)
+            context.itinerary &&
+            !Array.isArray(context.itinerary)
 
         ) {
 
             errors.push(
 
-                "days must be an array."
+                "itinerary must be an array."
 
             );
 
         }
 
-        if (!itinerary.budget) {
+        if (!context.tours) {
+
+            errors.push(
+
+                "Missing tours."
+
+            );
+
+        }
+
+        if (
+
+            context.tours &&
+            !Array.isArray(context.tours)
+
+        ) {
+
+            errors.push(
+
+                "tours must be an array."
+
+            );
+
+        }
+
+        if (!context.metadata) {
+
+            errors.push(
+
+                "Missing metadata."
+
+            );
+
+        }
+
+        if (!context.budget) {
 
             errors.push(
 
                 "Missing budget."
-
-            );
-
-        }
-
-        if (!itinerary.summary) {
-
-            errors.push(
-
-                "Missing summary."
 
             );
 

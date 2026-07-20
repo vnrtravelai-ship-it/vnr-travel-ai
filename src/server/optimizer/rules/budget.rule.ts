@@ -20,14 +20,6 @@ export class BudgetRule
         const errors: ConstraintError[] = [];
 
         if (
-            context.preferences?.budget == null
-        ) {
-
-            return errors;
-
-        }
-
-        if (
             context.budget == null
         ) {
 
@@ -35,23 +27,17 @@ export class BudgetRule
 
         }
 
-        const maxBudget =
-            context.preferences.budget;
-
-        const totalBudget =
-            context.budget.totalCost;
-
         if (
-            totalBudget > maxBudget
+            context.budget.total < 0
         ) {
 
             errors.push({
 
                 code:
-                    "BUDGET_OVERFLOW",
+                    "INVALID_BUDGET",
 
                 message:
-                    "Total itinerary cost exceeds the user's budget.",
+                    "Budget total cannot be negative.",
 
                 severity:
                     "ERROR",
@@ -60,19 +46,12 @@ export class BudgetRule
                     "BUDGET",
 
                 field:
-                    "budget.totalCost",
+                    "budget.total",
 
                 details: {
 
-                    maximum:
-                        maxBudget,
-
-                    actual:
-                        totalBudget,
-
-                    exceeded:
-
-                        totalBudget - maxBudget
+                    total:
+                        context.budget.total
 
                 }
 
