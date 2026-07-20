@@ -685,3 +685,174 @@ Planned
 | 3.8.5   | ✅      | Scheduler integration   |
 | 3.8.6   | ✅      | Architecture governance |
 | 3.9     | 🚧     | AI Optimizer            |
+
+# Version 3.9.0
+
+Date: 2026-07-20
+
+Status: Completed
+
+---
+
+# Sprint
+
+Sprint 3.9
+
+AI Optimizer Core
+
+---
+
+# Added
+
+## Optimizer
+
+Added
+
+src/server/optimizer/models/
+
+- constraint-error.model.ts
+- constraint-result.model.ts
+- constraint-rule.model.ts
+
+Added
+
+src/server/optimizer/rules/
+
+- budget.rule.ts
+- railway.rule.ts
+- hotel.rule.ts
+- schedule.rule.ts
+- transfer.rule.ts
+- duplicate.rule.ts
+
+Added
+
+src/server/optimizer/
+
+- constraint.solver.ts
+- conflict.detector.ts
+- recommendation.ranker.ts
+- reflection.engine.ts
+- prompt.builder.ts
+- json.validator.ts
+- ai-quality.scorer.ts
+
+---
+
+## AI Layer
+
+Added
+
+src/server/ai/providers/
+
+- ai-provider.interface.ts
+- openai.provider.ts
+- gemini.provider.ts
+- ai-provider.factory.ts
+
+---
+
+# Architecture
+
+Established complete AI Optimizer Pipeline
+
+PlanningContext
+
+↓
+
+Constraint Solver
+
+↓
+
+Conflict Detector
+
+↓
+
+Recommendation Ranker
+
+↓
+
+Reflection Engine
+
+↓
+
+Prompt Builder
+
+↓
+
+AI Provider
+
+↓
+
+JSON Validator
+
+↓
+
+AI Quality Scorer
+
+↓
+
+Frontend
+
+---
+
+# Improvements
+
+- Business logic fully separated from AI.
+- AI Provider abstraction completed.
+- Prompt generation standardized.
+- JSON validation introduced.
+- AI quality scoring introduced.
+- Multi-provider architecture completed.
+- Optimizer is deterministic and independently testable.
+
+---
+
+# Technical Decisions
+
+- Adopted AIProvider interface.
+- Adopted Factory Pattern for AI providers.
+- Optimizer no longer depends on OpenAI.
+- Planner remains the only source of business decisions.
+- AI is responsible only for natural language generation.
+
+---
+
+# Compatibility
+
+Compatible with
+
+- OpenAI GPT-5.5
+- Gemini 2.5 Pro
+
+Architecture prepared for
+
+- Claude
+- DeepSeek
+- Local LLM
+
+without changing Planning Engine.
+
+---
+
+# Documentation
+
+Added
+
+docs/sprints/SPRINT-3.9.md
+
+Updated
+
+- PROJECT_MANIFEST.md
+- ROADMAP_2026.md
+- DOCUMENT_INDEX.md
+
+---
+
+# Status
+
+Sprint 3.9 completed successfully.
+
+Repository architecture synchronized.
+
+Ready for Sprint 4.
