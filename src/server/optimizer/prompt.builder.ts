@@ -5,7 +5,7 @@ import { ConstraintResult }
     from "./models/constraint-result.model";
 
 import { ReflectionSuggestion }
-    from "./reflection.engine";
+    from "./reflection/reflection.types";
 
 export interface PromptPayload {
 

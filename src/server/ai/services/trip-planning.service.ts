@@ -8,7 +8,7 @@ import { ConstraintResult }
     from "../../optimizer/models/constraint-result.model";
 
 import { ReflectionSuggestion }
-    from "../../optimizer/reflection.engine";
+    from "../../optimizer/reflection/reflection.types";
 
 export class TripPlanningService {
 
