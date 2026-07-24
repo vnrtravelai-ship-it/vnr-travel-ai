@@ -1,435 +1,369 @@
-# PROJECT_MANIFEST.md
-
+# ==========================================================
+# PROJECT MANIFEST
+# VNR TRAVEL AI
+# Enterprise Development Constitution
 # ==========================================================
 
-# VNR Travel AI
+Version: 4.8
+Status: ACTIVE DEVELOPMENT
+Architecture Status: STABLE
+Current Sprint: Sprint 4.8
+Repository Branch: develop
 
-# Project Manifest
+Last Updated: 2026-07
 
-# ==========================================================
+---
 
-Version
+# 1. PROJECT IDENTITY
 
-1.0
-
-Status
-
-ACTIVE
-
-Last Updated
-
-2026-07-18
-
-Architecture Version
-
-3.8
-
-Owner
-
-Tien Cuong Nguyen
-
-Project
+Project Name
 
 VNR Travel AI
 
----
+Official Name
 
-# 1. Vision
+Vietnam Railway Travel AI Platform
 
-VNR Travel AI is an AI-powered Railway Travel Planning Platform specialized for Vietnam Railway tourism.
+Short Name
 
-The system is not merely a chatbot.
+VNR AI
 
-It is an intelligent planning engine capable of producing deterministic travel itineraries through business rules while using AI only for reasoning and presentation.
+Project Type
 
----
+Enterprise AI Travel Planning Platform
 
-# 2. Mission
+Primary Domain
 
-Build the most intelligent railway travel platform in Vietnam.
+Railway Tourism
 
-Core capabilities:
+Primary Market
 
-* Railway itinerary planning
-* Travel recommendation
-* Budget estimation
-* Affiliate booking
-* AI travel assistant
-* Tourism knowledge platform
+Vietnam
 
----
+Primary Language
 
-# 3. Long-term Goal
+Vietnamese
 
-Transform VNR Travel AI into
+International Support
 
-Railway Operating System
-
-for
-
-Travel Planning
-
-Booking
-
-Tourism
-
-CRM
-
-Analytics
-
-Affiliate
-
-Community
+English (planned)
 
 ---
 
-# 4. Core Principles
+# 2. PROJECT VISION
 
-## Principle 1
+Build the most intelligent Railway Travel Planning Platform in Vietnam.
 
-Business Rules First
+The platform must be capable of producing complete travel plans centered around Vietnam Railway services while integrating hotels, restaurants, attractions, local specialties, affiliate services, budgeting, scheduling, and AI-assisted optimization.
 
-AI Second
+The Planning Engine—not the AI model—is the authoritative source of business decisions.
 
-Business logic must never depend on LLM decisions.
+AI is responsible only for transforming validated planning results into natural language and structured itinerary output.
 
 ---
 
-## Principle 2
+# 3. COMMERCIAL OBJECTIVES
+
+The project is designed as a commercial SaaS platform.
+
+Primary revenue sources include:
+
+• Railway ticket affiliate
+• Hotel affiliate
+• Tour affiliate
+• Travel insurance affiliate
+• Local transportation affiliate
+• Premium AI itinerary subscription
+• Tourism partner advertising
+• Enterprise licensing
+• Tourism analytics
+• Railway ecosystem integration
+
+The architecture must always prioritize long-term commercial scalability over short-term implementation convenience.
+
+---
+
+# 4. CORE PRINCIPLES
+
+Every future modification must comply with these principles.
+
+Principle 1
+
+Business Logic First
+
+Business rules shall never be delegated to AI.
+
+Principle 2
 
 Deterministic Planning
 
-The same input must always produce the same planning result before AI formatting.
+The Planning Engine always produces deterministic outputs.
 
----
+Identical input must produce identical PlanningContext.
 
-## Principle 3
+Principle 3
+
+AI is Presentation Layer
+
+AI never decides:
+
+- train
+- hotel
+- schedule
+- pricing
+- budget
+- business policy
+
+AI only generates the final itinerary.
+
+Principle 4
 
 Single Source of Truth
 
-PlanningContext is the only object allowed to be sent to AI.
+PlanningContext is the only authoritative planning object.
 
-AI must never access repositories directly.
+No duplicate planning logic is allowed.
 
----
+Principle 5
 
-## Principle 4
+Layer Isolation
 
-Modular Architecture
+Each layer owns exactly one responsibility.
 
-Every planner must be independently replaceable.
+No cross-layer business logic.
 
-Modules must not create circular dependencies.
+Principle 6
 
----
+Commercial Readiness
 
-## Principle 5
+Every module must be designed for production deployment.
 
-Documentation Driven Development
-
-Documentation is part of the product.
-
-Every architectural change must update documentation before implementation.
+No prototype architecture is permitted.
 
 ---
 
-# 5. Architecture Principles
+# 5. PROJECT GOALS
 
-Current Architecture
+Functional Goals
 
-Client
+✓ Intelligent railway itinerary planning
+
+✓ Automatic scheduling
+
+✓ Budget optimization
+
+✓ Hotel recommendation
+
+✓ Food recommendation
+
+✓ Tour recommendation
+
+✓ Affiliate integration
+
+✓ AI itinerary generation
+
+✓ JSON validation
+
+✓ Self-healing AI pipeline
+
+Future Goals
+
+✓ Weather integration
+
+✓ Dynamic pricing
+
+✓ Multi-city planning
+
+✓ Voice assistant
+
+✓ Mobile application
+
+✓ Enterprise dashboard
+
+---
+
+# 6. TARGET USERS
+
+Primary Users
+
+- Railway passengers
+- Domestic tourists
+- International tourists
+- Family travelers
+- Solo travelers
+
+Secondary Users
+
+- Railway operators
+- Tourism agencies
+- Hotel partners
+- Tour operators
+- Enterprise customers
+
+---
+
+# 7. TECHNOLOGY STACK
+
+Frontend
+
+- React
+- TypeScript
+- Vite
+
+Backend
+
+- Node.js
+- Express
+- TypeScript
+
+Database
+
+- Firebase Firestore
+
+Authentication
+
+- Firebase Authentication
+
+Storage
+
+- Firebase Storage
+
+AI Providers
+
+- Gemini
+- OpenAI
+
+Architecture already prepared for:
+
+- Claude
+- DeepSeek
+- Local LLM
+
+Infrastructure
+
+- Railway
+- GitHub
+
+Documentation
+
+Markdown
+
+Architecture Decision Records (ADR)
+
+---
+
+# 8. PROJECT ARCHITECTURE LEVELS
+
+Level 1
+
+Presentation
+
+Frontend
 
 ↓
+
+Level 2
 
 REST API
 
 ↓
 
+Level 3
+
 Planning Engine
 
 ↓
 
-Knowledge
+Level 4
+
+Knowledge Layer
 
 ↓
 
-Scheduler
+Level 5
+
+Optimizer
 
 ↓
 
-Itinerary
+Level 6
+
+AI Core
 
 ↓
 
-Budget
+Level 7
+
+Output Validation
 
 ↓
 
-Affiliate
+Level 8
+
+Self-Healing
 
 ↓
 
-PlanningContext
+Level 9
 
-↓
+Response Serialization
 
-AI Optimizer (v3.9)
+No future implementation may violate this execution order.
 
-↓
+---
+# ==========================================================
+# 9. DEVELOPMENT PRINCIPLES
+# ==========================================================
 
-Gemini
+The project is developed according to Enterprise Software Engineering principles.
 
-↓
+Every change must satisfy:
 
-JSON
+- Maintainability
+- Scalability
+- Readability
+- Testability
+- Extensibility
+- Deterministic Business Logic
+- Documentation Synchronization
 
-No layer may bypass PlanningContext.
+No shortcut implementation is permitted.
 
 ---
 
-# 6. AI Principles
+# 10. DEVELOPMENT WORKFLOW
 
-AI responsibilities
+Every feature must follow the same lifecycle.
 
-✔ Explain
-
-✔ Summarize
-
-✔ Recommend
-
-✔ Rewrite
-
-✔ Generate natural language
-
-✔ Produce JSON
-
-AI must NEVER
-
-Choose trains
-
-Choose hotels
-
-Calculate budget
-
-Arrange schedule
-
-Resolve business rules
-
-Modify repository data
-
-Business decisions belong to Rule Engine.
-
----
-
-# 7. Clean Architecture Rules
-
-Dependencies must always point inward.
-
-Presentation
+Business Requirement
 
 ↓
 
-Application
+Architecture Design
 
 ↓
 
-Domain
+Folder Structure
 
 ↓
 
-Infrastructure
-
-Never the opposite.
-
----
-
-# 8. Repository Rules
-
-Repositories only retrieve data.
-
-Repositories never contain business logic.
-
-Business logic belongs to Services and Planning Engine.
-
----
-
-# 9. Scheduler Rules
-
-Scheduler converts knowledge into executable timeline.
-
-Scheduler Rules
-
-TrainArrivalRule
-
-HotelCheckinRule
-
-MealRule
-
-OpenHourRule
-
-DistanceRule
-
-Future
-
-ConflictResolver
-
-RouteOptimizer
-
-ConstraintSolver
-
-QualityScorer
-
----
-
-# 10. Planning Rules
-
-Planning Pipeline
-
-Request
+Data Models
 
 ↓
 
-Knowledge
+Business Logic
 
 ↓
 
-PlanningContext(Base)
+Integration
 
 ↓
 
-Scheduler
+Lint
 
 ↓
 
-Itinerary
-
-↓
-
-Budget
-
-↓
-
-Affiliate
-
-↓
-
-PlanningContext(Final)
-
-↓
-
-AI Optimizer
-
-↓
-
-Gemini
-
-↓
-
-Response
-
-Execution order must never change without updating documentation.
-
----
-
-# 11. Definition of Done
-
-A Sprint is complete only when ALL conditions are satisfied.
-
-Code completed
-
-Lint passed
-
-Tests passed (when available)
-
-Documentation updated
-
-Roadmap updated
-
-Architecture updated
-
-Project State updated
-
-Changelog updated
-
-Manifest updated (if architecture/process changes)
-
-Git Commit
-
-Git Tag (for milestone)
-
-Working Tree Clean
-
-Only then may the next Sprint begin.
-
----
-
-# 12. Documentation Policy
-
-Every architectural change requires updating:
-
-PROJECT_STATE.md
-
-CHANGELOG.md
-
-ARCHITECTURE.md
-
-PLANNER_PIPELINE.md
-
-ROADMAP_2026.md
-
-PROJECT_MANIFEST.md
-
-No implementation is considered complete until documentation is synchronized.
-
----
-
-# 13. Git Workflow
-
-Development
-
-↓
-
-npm run lint
-
-↓
-
-Tests
-
-↓
-
-Commit
-
-↓
-
-Tag
-
-↓
-
-Push
-
-↓
-
-Documentation Review
-
-↓
-
-Next Sprint
-
-Never skip lint before commit.
-
-Never tag unstable versions.
-
----
-
-# 14. Sprint Workflow
-
-Every Sprint follows:
-
-Planning
-
-↓
-
-Architecture Review
+Build
 
 ↓
 
@@ -437,14 +371,6 @@ Documentation Update
 
 ↓
 
-Implementation
-
-↓
-
-Testing
-
-↓
-
 Git Commit
 
 ↓
@@ -453,194 +379,1210 @@ Git Tag
 
 ↓
 
-Sprint Summary
+Git Push
 
 ↓
 
-Next Sprint
+Sprint Closed
+
+A Sprint is NOT considered completed until every step above has finished successfully.
 
 ---
 
-# 15. Architecture Decision Records
+# 11. MANDATORY BUILD POLICY
 
-Every significant architectural decision requires an ADR.
+Every coding session must end with:
+
+npm run lint
+
+Result
+
+PASS
+
+Then
+
+npm run build
+
+Result
+
+PASS
+
+If either command fails:
+
+The Sprint must NOT be closed.
+
+Git commit is forbidden until Build PASS.
+
+---
+
+# 12. GIT WORKFLOW
+
+Official Branch
+
+develop
+
+Every completed Sprint must execute:
+
+git add .
+
+↓
+
+git commit
+
+↓
+
+git tag
+
+↓
+
+git push origin develop --tags
+
+Working Tree must always return to:
+
+nothing to commit
+
+working tree clean
+
+---
+
+# 13. DOCUMENT SYNCHRONIZATION POLICY
+
+The following documents are mandatory project documents.
+
+PROJECT_MANIFEST.md
+
+Defines permanent project rules.
+
+ARCHITECTURE.md
+
+Defines architecture.
+
+ROADMAP_2026.md
+
+Defines development roadmap.
+
+PROJECT_STATE.md
+
+Defines current project status.
+
+CHANGELOG.md
+
+Defines project history.
+
+MASTER_ROADMAP.md
+
+Defines the complete lifecycle of the project.
+
+These documents must always remain synchronized.
+
+---
+
+# 14. WHEN DOCUMENTS MUST BE UPDATED
+
+PROJECT_MANIFEST
+
+Update when:
+
+- project principles change
+- coding rules change
+- governance changes
+
+ARCHITECTURE
+
+Update when:
+
+- architecture changes
+- dependency changes
+- execution pipeline changes
+
+ROADMAP
+
+Update when:
+
+- Sprint completed
+- Sprint reordered
+- roadmap expanded
+
+PROJECT_STATE
+
+Update after every Sprint.
+
+CHANGELOG
+
+Update after every Sprint.
+
+MASTER_ROADMAP
+
+Update whenever the long-term execution plan changes.
+
+---
+
+# 15. SPRINT CLOSING CHECKLIST
+
+A Sprint cannot be closed unless all items below are completed.
+
+✓ Feature completed
+
+✓ Code reviewed
+
+✓ npm run lint PASS
+
+✓ npm run build PASS
+
+✓ Documentation synchronized
+
+✓ Git commit
+
+✓ Git tag
+
+✓ Git push
+
+✓ Working Tree clean
+
+Only then may the Sprint status become:
+
+COMPLETED
+
+---
+
+# 16. CODING STANDARDS
+
+Language
+
+TypeScript
+
+Strict Mode
+
+Enabled
+
+Any
+
+Forbidden
+
+Implicit Any
+
+Forbidden
+
+Type Assertions
+
+Use only when unavoidable.
+
+Interfaces
+
+Preferred over type aliases for domain models.
+
+Enums
+
+Avoid unless semantically necessary.
+
+Export Style
+
+Named exports.
+
+Default export should be avoided unless required by framework conventions.
+
+---
+
+# 17. FILE ORGANIZATION
+
+One responsibility per file.
+
+One domain per folder.
+
+Maximum cohesion.
+
+Minimum coupling.
 
 Examples
 
-ADR-001 Clean Architecture
+Planning
 
-ADR-002 PlanningContext
+planning/
 
-ADR-003 Scheduler Engine
+Knowledge
 
-ADR-004 AI Optimizer
+knowledge/
 
-ADR-005 Knowledge Layer
+Scheduler
+
+scheduler/
+
+Optimizer
+
+optimizer/
+
+AI
+
+ai/
+
+Repositories
+
+repositories/
+
+Providers
+
+providers/
+
+Services
+
+services/
+
+Controllers
+
+controllers/
+
+Models
+
+models/
+
+Rules
+
+rules/
+
+Templates
+
+templates/
+
+Utilities
+
+utils/
+
+Cross-domain business logic is prohibited.
 
 ---
 
-# 16. Testing Strategy
+# 18. IMPORT RULES
 
-Priority
+Allowed direction
+
+Controllers
+
+↓
+
+Services
+
+↓
 
 Planning Engine
 
-Scheduler Engine
+↓
 
-Budget Engine
+Knowledge
 
-Affiliate Engine
+↓
 
-Integration Tests
+Repositories
 
-API Tests
+Forbidden examples
 
-Future
+Repository importing Controller
 
-Performance Tests
+Knowledge importing Frontend
 
-Load Tests
+AI Provider importing Business Rules
 
-AI Output Validation
+Business Rules importing AI Provider
 
----
-
-# 17. Backup Policy
-
-Every milestone must have:
-
-Git Tag
-
-Documentation Snapshot
-
-Architecture Snapshot
-
-Project Tree Snapshot
-
-Database Backup (future)
-
-Environment Backup
-
-Prompt Backup
-
-No milestone is considered safe without backup.
+No circular dependencies are allowed.
 
 ---
 
-# 18. Release Policy
+# 19. DEPENDENCY INJECTION POLICY
 
-Stable Release
+All shared services must be registered inside:
 
-Architecture Complete
+ApplicationContainer
 
-Documentation Complete
+No class should manually instantiate long-lived services.
 
-Lint Pass
-
-Tests Pass
-
-Tagged Version
-
-Release Notes
-
-Production Ready
+Singleton services must be resolved through the container.
 
 ---
 
-# 19. Roadmap
+# 20. ERROR HANDLING
 
-Completed
+Business errors
 
-v3.0 Core Planning
+Return structured objects.
 
-v3.1 Railway
+Unexpected errors
 
-v3.2 Hotel
+Throw exceptions.
 
-v3.3 Food
+AI errors
 
-v3.4 Tour
+Must never crash the Planning Engine.
 
-v3.5 Budget
+AI failures are handled through:
 
-v3.6 Affiliate
+Retry Engine
 
-v3.7 Itinerary
+↓
 
-v3.8 Scheduler
+Validator
 
-Next
+↓
 
-v3.8.5 Foundation Hardening
+Self-Healing
 
-ADR
+↓
 
-Manifest
+Fallback Response
 
-Sprint Logs
+Planning Engine must always remain operational.
 
-OpenAPI
+---
+# ==========================================================
+# 21. BUSINESS LOGIC GOVERNANCE
+# ==========================================================
 
-Testing Foundation
+Business Logic is the heart of VNR Travel AI.
 
-Backup Strategy
+Business Logic shall NEVER exist inside:
 
-CI/CD
+- AI Providers
+- Prompt Builders
+- Frontend
+- Controllers
+- JSON Validators
 
-v3.9 AI Optimizer
+Business Logic belongs only to:
 
-Conflict Detection
+Planning Engine
 
-Recommendation Ranking
+Knowledge Layer
+
+Scheduler
+
+Optimizer
+
+Business Rules
+
+Repositories
+
+Every future feature must respect this separation.
+
+---
+
+# 22. PLANNING ENGINE AUTHORITY
+
+PlanningEngine is the only component allowed to create
+PlanningContext.
+
+PlanningContext is considered immutable after PlanningEngine
+has completed its execution.
+
+No downstream component may change business decisions.
+
+Allowed operations after PlanningEngine:
+
+✓ formatting
+
+✓ validation
+
+✓ scoring
+
+✓ repairing output formatting
+
+✓ natural language generation
+
+Forbidden:
+
+changing train
+
+changing hotel
+
+changing schedule
+
+changing budget
+
+changing business rules
+
+changing destinations
+
+changing itinerary decisions
+
+---
+
+# 23. PLANNING CONTEXT
+
+PlanningContext is the Single Source of Truth.
+
+Everything produced later must originate from PlanningContext.
+
+PlanningContext owns:
+
+request
+
+railway
+
+hotel
+
+food
+
+tours
+
+itinerary
+
+budget
+
+affiliate
+
+metadata
+
+No duplicated planning object is allowed.
+
+No AI-generated planning object is accepted as authoritative.
+
+---
+
+# 24. KNOWLEDGE LAYER
+
+Knowledge Layer provides deterministic data.
+
+Knowledge modules include:
+
+Railway
+
+Hotel
+
+Food
+
+Tour
+
+Budget
+
+Affiliate
+
+Scheduler
+
+Future modules:
+
+Weather
+
+Events
+
+Dynamic Pricing
+
+Traffic
+
+Each knowledge module must remain independent.
+
+Knowledge modules must never communicate directly.
+
+All orchestration belongs to PlanningEngine.
+
+---
+
+# 25. SCHEDULER GOVERNANCE
+
+Scheduler Engine is responsible only for timing.
+
+Scheduler decides:
+
+arrival
+
+departure
+
+meal timing
+
+hotel check-in
+
+activity ordering
+
+travel intervals
+
+Scheduler never decides:
+
+hotel selection
+
+tour recommendation
+
+budget
+
+railway recommendation
+
+---
+
+# 26. OPTIMIZER GOVERNANCE
+
+Optimizer improves planning quality.
+
+Optimizer never creates planning.
+
+Optimizer contains:
 
 Constraint Solver
 
-Quality Score
+Conflict Detector
+
+Recommendation Ranker
 
 Reflection Engine
 
-v4.0 Multi-city Planner
+Prompt Builder
 
-v4.1 Production Backend
+Repair Builder
 
-v4.2 Planner Frontend
+Prompt Optimizer
 
-v5.0 Railway Travel AI Platform
+Output Validator
 
----
+Self-Healing
 
-# 20. Collaboration Rules
+AI Quality Scorer
 
-Before every development session
+Optimizer may recommend improvements.
 
-Review Project State
-
-Review Roadmap
-
-Review Current Sprint
-
-Review Architecture
-
-Confirm Definition of Done
-
-Only then begin coding.
-
-This rule applies to every future conversation and every contributor.
+PlanningEngine decides whether those improvements are accepted.
 
 ---
 
-# 21. Project Philosophy
+# 27. AI CORE GOVERNANCE
 
-We are not building a chatbot.
+AI is NOT the planner.
 
-We are building an intelligent travel planning platform.
+AI is the presenter.
 
-Business rules provide correctness.
+AI responsibilities:
 
-AI provides intelligence.
+generate itinerary text
 
-Documentation preserves knowledge.
+rewrite explanations
 
-Architecture enables long-term evolution.
+produce JSON
 
-Every change must make the project easier to maintain, easier to extend, and safer to evolve.
+repair formatting
+
+follow prompt
+
+AI must never:
+
+select train
+
+select hotel
+
+calculate budget
+
+change schedule
+
+invent destinations
+
+invent prices
+
+invent railway data
+
+invent affiliate links
+
+Business decisions remain inside backend.
+
+---
+
+# 28. AI PROVIDER POLICY
+
+Supported providers:
+
+Gemini
+
+OpenAI
+
+Future:
+
+Claude
+
+DeepSeek
+
+Local LLM
+
+Every provider must implement:
+
+AIProvider
+
+Provider implementations must remain stateless.
+
+Provider code must never contain business logic.
+
+---
+
+# 29. PROMPT POLICY
+
+Prompt Builder receives:
+
+PlanningContext
+
+ConstraintResult
+
+Reflection Suggestions
+
+Prompt Builder generates prompts.
+
+Prompt Builder never generates business rules.
+
+Prompt Builder never calculates itinerary.
+
+Prompt Builder never validates business logic.
+
+---
+
+# 30. OUTPUT VALIDATION
+
+Every AI response must pass:
+
+JSON Validator
+
+↓
+
+Schema Validator
+
+↓
+
+Output Validator
+
+↓
+
+Self-Healing
+
+↓
+
+Response Parser
+
+Invalid output must never reach frontend.
+
+---
+
+# 31. SELF-HEALING
+
+Self-Healing exists only to repair AI output.
+
+It must never modify PlanningContext.
+
+Allowed:
+
+repair malformed JSON
+
+repair missing fields
+
+repair formatting
+
+repair schema
+
+Forbidden:
+
+change itinerary
+
+change destinations
+
+change budget
+
+change business decisions
+
+---
+
+# 32. IMMUTABLE COMPONENTS
+
+The following components are considered immutable architecture.
+
+PlanningEngine
+
+PlanningContext
+
+Knowledge Layer
+
+Scheduler
+
+Repositories
+
+Dependency Injection
+
+ApplicationContainer
+
+Business Rules
+
+These components may evolve internally.
+
+Their responsibilities must never change.
+
+---
+
+# 33. FORBIDDEN CHANGES
+
+The following changes are permanently prohibited.
+
+Moving business logic into AI.
+
+Moving business logic into frontend.
+
+Allowing AI to decide itinerary.
+
+Duplicating PlanningContext.
+
+Bypassing validation pipeline.
+
+Direct controller-to-repository communication.
+
+Circular dependencies.
+
+Mixing business logic into providers.
+
+Removing documentation synchronization.
+
+Skipping Build PASS before commit.
+
+Skipping documentation update after Sprint completion.
+
+---
+
+# 34. ARCHITECTURE DECISION RECORDS
+
+All major architectural decisions must be documented.
+
+ADR documents are mandatory.
+
+Current ADRs:
+
+ADR-001
+
+Planning Engine
+
+ADR-002
+
+Knowledge Repository
+
+ADR-003
+
+Scheduler Engine
+
+ADR-004
+
+AI Provider
+
+ADR-005
+
+Dependency Injection
+
+Future architectural changes require a new ADR.
+
+---
+
+# 35. BACKWARD COMPATIBILITY
+
+New features must not break existing modules.
+
+Breaking changes require:
+
+Architecture review
+
+ADR update
+
+Documentation update
+
+Migration strategy
+
+Backward compatibility should be preserved whenever possible.
+
+---
+# ==========================================================
+# 36. CODING CONVENTIONS
+# ==========================================================
+
+All source code must follow the same coding conventions.
+
+Language
+
+TypeScript
+
+Strict Mode
+
+Enabled
+
+Formatting
+
+Prettier compatible
+
+Lint
+
+TypeScript lint must always PASS.
+
+Maximum Responsibility
+
+One responsibility per class.
+
+One responsibility per file.
+
+Maximum Function Length
+
+Approximately 100 lines.
+
+Large functions should be decomposed.
+
+Magic Numbers
+
+Forbidden.
+
+Use constants.
+
+Comments
+
+Explain WHY.
+
+Do not explain WHAT unless necessary.
+
+---
+
+# 37. NAMING CONVENTIONS
+
+Folders
+
+lowercase
+
+Examples
+
+planning
+
+knowledge
+
+optimizer
+
+scheduler
+
+Files
+
+kebab-case
+
+Examples
+
+planning.engine.ts
+
+hotel.repository.ts
+
+constraint.solver.ts
+
+Classes
+
+PascalCase
+
+Interfaces
+
+PascalCase
+
+Functions
+
+camelCase
+
+Variables
+
+camelCase
+
+Constants
+
+UPPER_SNAKE_CASE
+
+Enums
+
+PascalCase
+
+---
+
+# 38. FOLDER OWNERSHIP
+
+planning/
+
+Owns itinerary generation.
+
+knowledge/
+
+Owns deterministic travel knowledge.
+
+repositories/
+
+Owns data access.
+
+providers/
+
+Owns external systems.
+
+scheduler/
+
+Owns timeline generation.
+
+optimizer/
+
+Owns quality improvement.
+
+ai/
+
+Owns AI communication.
+
+controllers/
+
+Owns REST endpoints.
+
+services/
+
+Owns orchestration.
+
+models/
+
+Owns domain models.
+
+rules/
+
+Owns business rules.
+
+templates/
+
+Owns reusable prompt templates.
+
+utils/
+
+Owns generic helper utilities.
+
+No folder may assume another folder's responsibility.
+
+---
+
+# 39. SECURITY POLICY
+
+Security is mandatory.
+
+The following rules are permanent.
+
+Never expose API keys.
+
+Never expose provider secrets.
+
+Never trust frontend input.
+
+Always validate external data.
+
+Always sanitize AI output.
+
+Never execute AI-generated code.
+
+Never bypass authentication.
+
+Never bypass validation.
+
+---
+
+# 40. PERFORMANCE POLICY
+
+Performance must be considered during every Sprint.
+
+Planning Engine
+
+Must remain deterministic.
+
+Knowledge Layer
+
+Should support caching.
+
+Repositories
+
+Should support indexing.
+
+AI Providers
+
+Must be replaceable.
+
+Large datasets
+
+Must support pagination.
+
+Future optimizations should preserve API compatibility.
+
+---
+
+# 41. TESTING POLICY
+
+Every major module should eventually support:
+
+Unit Tests
+
+Integration Tests
+
+Regression Tests
+
+Performance Tests
+
+Current testing status
+
+Foundation established.
+
+Comprehensive testing planned in future sprints.
+
+---
+
+# 42. DOCUMENTATION POLICY
+
+Documentation is part of the product.
+
+Code is never considered complete without documentation.
+
+Every Sprint completion requires synchronized updates to:
+
+PROJECT_MANIFEST
+
+ARCHITECTURE
+
+ROADMAP_2026
+
+PROJECT_STATE
+
+CHANGELOG
+
+MASTER_ROADMAP
+
+Documentation is treated as source code.
+
+---
+
+# 43. DEFINITION OF DONE
+
+A feature is complete only when all conditions below are true.
+
+✓ Implementation completed
+
+✓ TypeScript passes
+
+✓ Build passes
+
+✓ Documentation updated
+
+✓ Architecture unchanged or documented
+
+✓ Git commit completed
+
+✓ Git tag created
+
+✓ Git pushed
+
+✓ Working Tree clean
+
+Only then is the Sprint considered finished.
+
+---
+
+# 44. AI ONBOARDING
+
+Any AI assisting this project must follow this sequence.
+
+Step 1
+
+Read PROJECT_MANIFEST.md
+
+Step 2
+
+Read ARCHITECTURE.md
+
+Step 3
+
+Read MASTER_ROADMAP.md
+
+Step 4
+
+Read ROADMAP_2026.md
+
+Step 5
+
+Read PROJECT_STATE.md
+
+Step 6
+
+Read CHANGELOG.md
+
+Only after reading these documents may implementation begin.
+
+No assumptions are allowed.
+
+---
+
+# 45. PROJECT GOVERNANCE
+
+This repository follows Documentation Driven Development.
+
+Architecture Driven Development.
+
+Business Rule Driven Development.
+
+AI Assisted Development.
+
+Every implementation must preserve:
+
+Deterministic planning
+
+Commercial readiness
+
+Enterprise architecture
+
+Long-term maintainability
+
+Backward compatibility
+
+---
+
+# 46. PROJECT MISSION
+
+VNR Travel AI is not merely an itinerary generator.
+
+It is intended to become Vietnam's leading intelligent railway travel platform.
+
+Every design decision must support that long-term vision.
+
+Short-term convenience must never compromise long-term architecture.
+
+---
+
+# 47. IMMUTABLE PROJECT OBJECTIVES
+
+These objectives shall not change.
+
+Build the best Railway Travel AI platform.
+
+Separate Business Logic from AI.
+
+Maintain deterministic planning.
+
+Support multiple AI providers.
+
+Preserve enterprise architecture.
+
+Ensure production readiness.
+
+Guarantee long-term maintainability.
+
+These objectives override implementation preferences.
+
+---
+
+# 48. MANIFEST AUTHORITY
+
+PROJECT_MANIFEST.md is the highest-level governance document of this repository.
+
+If any documentation conflicts with PROJECT_MANIFEST.md,
+
+PROJECT_MANIFEST.md takes precedence.
+
+All future documentation must remain consistent with this document.
+
+All future implementations must comply with this document.
+
+---
+
+# END OF MANIFEST
+
+Document Status
+
+COMPLETE
+
+Architecture Status
+
+STABLE
+
+Governance Status
+
+ACTIVE
+
+This document defines the permanent development constitution of VNR Travel AI.
+
+Every contributor, AI assistant, reviewer, and maintainer is required to comply with this Manifest before modifying the project.
