@@ -2,10 +2,6 @@ import { PlanningContext } from "../models/planning-context.model";
 
 export class PlanningRules {
 
-    /**
-     * Kiểm tra dữ liệu đầu vào tối thiểu
-     */
-
     static validateContext(
         context: PlanningContext
     ): boolean {
@@ -16,15 +12,13 @@ export class PlanningRules {
 
             context.request.departure &&
 
-            context.request.destination
+            context.request.destination &&
+
+            context.request.numberOfDays > 0
 
         );
 
     }
-
-    /**
-     * Kiểm tra đã có dữ liệu đường sắt
-     */
 
     static hasRailway(
         context: PlanningContext
@@ -34,10 +28,6 @@ export class PlanningRules {
 
     }
 
-    /**
-     * Kiểm tra đã chọn khách sạn
-     */
-
     static hasHotel(
         context: PlanningContext
     ): boolean {
@@ -46,21 +36,13 @@ export class PlanningRules {
 
     }
 
-    /**
-     * Kiểm tra có lịch trình
-     */
-
-    static hasItinerary(
+    static hasFood(
         context: PlanningContext
     ): boolean {
 
-        return context.itinerary.length > 0;
+        return !!context.food;
 
     }
-
-    /**
-     * Kiểm tra có tour
-     */
 
     static hasTours(
         context: PlanningContext
@@ -70,9 +52,13 @@ export class PlanningRules {
 
     }
 
-    /**
-     * Kiểm tra có ngân sách
-     */
+    static hasItinerary(
+        context: PlanningContext
+    ): boolean {
+
+        return context.itinerary.length > 0;
+
+    }
 
     static hasBudget(
         context: PlanningContext
@@ -82,10 +68,6 @@ export class PlanningRules {
 
     }
 
-    /**
-     * Kiểm tra có Affiliate
-     */
-
     static hasAffiliate(
         context: PlanningContext
     ): boolean {
@@ -94,9 +76,52 @@ export class PlanningRules {
 
     }
 
-    /**
-     * Planning Context hoàn chỉnh
-     */
+    static hasMetadata(
+        context: PlanningContext
+    ): boolean {
+
+        return !!(
+
+            context.metadata &&
+
+            context.metadata.locale &&
+
+            context.metadata.currency
+
+        );
+
+    }
+
+    static missingModules(
+        context: PlanningContext
+    ): string[] {
+
+        const missing: string[] = [];
+
+        if (!this.hasRailway(context))
+            missing.push("railway");
+
+        if (!this.hasHotel(context))
+            missing.push("hotel");
+
+        if (!this.hasFood(context))
+            missing.push("food");
+
+        if (!this.hasTours(context))
+            missing.push("tours");
+
+        if (!this.hasItinerary(context))
+            missing.push("itinerary");
+
+        if (!this.hasBudget(context))
+            missing.push("budget");
+
+        if (!this.hasMetadata(context))
+            missing.push("metadata");
+
+        return missing;
+
+    }
 
     static isCompleted(
         context: PlanningContext
@@ -106,15 +131,17 @@ export class PlanningRules {
 
             this.validateContext(context) &&
 
-            this.hasRailway(context) &&
-
-            this.hasHotel(context) &&
-
-            this.hasItinerary(context) &&
-
-            this.hasBudget(context)
+            this.missingModules(context).length === 0
 
         );
+
+    }
+
+    static canContinueToAI(
+        context: PlanningContext
+    ): boolean {
+
+        return this.isCompleted(context);
 
     }
 

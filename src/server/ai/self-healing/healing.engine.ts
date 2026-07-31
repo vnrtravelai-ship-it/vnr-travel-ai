@@ -66,21 +66,12 @@ export class HealingEngine {
 
         const aiResponse =
 
-            await this.provider.generate({
+    await this.provider.generate(
 
-                planningContext:
-                    repairPayload.planningContext,
+        prompt
 
-                validation:
-                    repairPayload.validation,
-
-                suggestions:
-                    repairPayload.suggestions,
-
-                systemPrompt:
-                    prompt
-
-            });
+    );
+            
 
         const validation =
 

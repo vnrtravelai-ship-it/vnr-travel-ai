@@ -1,6 +1,3 @@
-import { PromptPayload }
-    from "../../optimizer/prompt.builder";
-
 export interface AIResponse {
 
     /**
@@ -51,11 +48,12 @@ export interface AIProvider {
     readonly model: string;
 
     /**
-     * Execute AI generation.
+     * PromptEngine đã build hoàn chỉnh prompt.
+     * Provider chỉ nhận string.
      */
     generate(
 
-        payload: PromptPayload
+        prompt: string
 
     ): Promise<AIResponse>;
 

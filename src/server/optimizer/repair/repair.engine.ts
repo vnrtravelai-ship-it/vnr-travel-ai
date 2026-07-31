@@ -11,11 +11,9 @@ import { RepairBuilder }
     from "./repair.builder";
 
 import {
-
     RepairPayload,
-
-    RepairResult
-
+    RepairResult,
+    RepairInstruction
 }
     from "./repair.types";
 
@@ -62,7 +60,9 @@ export class RepairEngine {
 
                     payload.validation,
 
-                    payload.suggestions
+                    payload.suggestions,
+
+                    payload.instructions as RepairInstruction[]
 
                 );
 
@@ -73,7 +73,6 @@ export class RepairEngine {
                 success: true,
 
                 explanation:
-
                     "AI repair completed successfully."
 
             };
@@ -89,7 +88,6 @@ export class RepairEngine {
             return {
 
                 repaired:
-
                     planningContext as unknown as T,
 
                 success: false,

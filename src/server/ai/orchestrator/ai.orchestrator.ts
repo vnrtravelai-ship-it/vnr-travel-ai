@@ -1,5 +1,5 @@
-import { PromptBuilder }
-    from "../../optimizer/prompt.builder";
+import { PromptEngine }
+    from "../../optimizer/prompt/prompt.engine";
 
 import { ResponseParser }
     from "../parser/response.parser";
@@ -16,16 +16,45 @@ import { ConstraintResult }
 import { ReflectionSuggestion }
     from "../../optimizer/reflection/reflection.types";
 
+import {
+    RepairInstruction
+}
+    from "../../optimizer/repair/repair.types";
+
 import { RetryEngine }
     from "../retry/retry.engine";
+
+/**
+ * ==========================================================
+ * AI Orchestrator
+ * ==========================================================
+ *
+ * Pipeline:
+ *
+ * Planning
+ *      ↓
+ * Constraint Validation
+ *      ↓
+ * Reflection
+ *      ↓
+ * Repair
+ *      ↓
+ * Prompt Engine
+ *      ↓
+ * AI Provider
+ *      ↓
+ * Response Parser
+ *
+ * ==========================================================
+ */
 
 export class AIOrchestrator {
 
     private readonly provider =
         AIProviderFactory.create();
 
-    private readonly promptBuilder =
-        new PromptBuilder();
+    private readonly promptEngine =
+        new PromptEngine();
 
     private readonly parser =
         new ResponseParser();
@@ -39,18 +68,22 @@ export class AIOrchestrator {
 
         validation: ConstraintResult,
 
-        suggestions: ReflectionSuggestion[]
+        suggestions: ReflectionSuggestion[],
+
+        repairs: RepairInstruction[]
 
     ): Promise<T> {
 
-        const payload =
-            this.promptBuilder.build(
+        const prompt =
+            this.promptEngine.build(
 
                 planningContext,
 
                 validation,
 
-                suggestions
+                suggestions,
+
+                repairs
 
             );
 
@@ -61,7 +94,7 @@ export class AIOrchestrator {
 
                     this.provider.generate(
 
-                        payload
+                        prompt
 
                     )
 

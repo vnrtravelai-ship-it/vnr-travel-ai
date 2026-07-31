@@ -10,6 +10,9 @@ import { ConstraintResult }
 import { ReflectionSuggestion }
     from "../../optimizer/reflection/reflection.types";
 
+import { RepairInstruction }
+    from "../../optimizer/repair/repair.types";
+
 export class TripPlanningService {
 
     private readonly orchestrator =
@@ -21,7 +24,9 @@ export class TripPlanningService {
 
         validation: ConstraintResult,
 
-        suggestions: ReflectionSuggestion[]
+        suggestions: ReflectionSuggestion[],
+
+        repairs: RepairInstruction[]
 
     ): Promise<T> {
 
@@ -31,7 +36,9 @@ export class TripPlanningService {
 
             validation,
 
-            suggestions
+            suggestions,
+
+            repairs
 
         );
 

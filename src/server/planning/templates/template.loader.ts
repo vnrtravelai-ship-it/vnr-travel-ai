@@ -1,3 +1,6 @@
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
+
 import { PlanningTemplate } from "./template.types";
 
 export class TemplateLoader {
@@ -33,18 +36,55 @@ export class TemplateLoader {
 
     private loadTemplates(): PlanningTemplate[] {
 
-        /*
-         * GIỮ NGUYÊN toàn bộ code hiện tại của bạn
-         * đang đọc file JSON tại đây.
-         *
-         * Chỉ đổi:
-         *
-         * load()
-         *
-         * thành
-         *
-         * loadTemplates()
-         */
+        const candidates = [
+
+            join(process.cwd(), "data", "planning-templates.json"),
+
+            join(process.cwd(), "src", "server", "planning", "templates", "planning-templates.json")
+
+        ];
+
+        for (const file of candidates) {
+
+            try {
+
+                if (!existsSync(file)) {
+
+                    continue;
+
+                }
+
+                const raw = readFileSync(file, "utf8");
+
+                const json = JSON.parse(raw);
+
+                if (Array.isArray(json)) {
+
+                    return json as PlanningTemplate[];
+
+                }
+
+                if (Array.isArray(json.templates)) {
+
+                    return json.templates as PlanningTemplate[];
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.warn(
+
+                    `[TemplateLoader] Cannot load template file: ${file}`,
+
+                    error
+
+                );
+
+            }
+
+        }
 
         return [];
 

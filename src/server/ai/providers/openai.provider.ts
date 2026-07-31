@@ -1,21 +1,9 @@
-import OpenAI
-    from "openai";
+import OpenAI from "openai";
 
 import {
-
     AIProvider,
-
     AIResponse
-
-}
-from "./ai-provider.interface";
-
-import {
-
-    PromptPayload
-
-}
-from "../../optimizer/prompt.builder";
+} from "./ai-provider.interface";
 
 export class OpenAIProvider
     implements AIProvider {
@@ -23,85 +11,40 @@ export class OpenAIProvider
     readonly name = "OpenAI";
 
     readonly model =
-
         process.env.OPENAI_MODEL
-
         ?? "gpt-5.5";
 
     private readonly client =
         new OpenAI({
 
             apiKey:
-
                 process.env.OPENAI_API_KEY
 
         });
 
     async generate(
 
-        payload: PromptPayload
+        prompt: string
 
     ): Promise<AIResponse> {
 
         const completion =
-
             await this.client.responses.create({
 
-                model:
+                model: this.model,
 
-                    this.model,
-
-                input: [
-
-                    {
-
-                        role: "system",
-
-                        content:
-
-                            payload.systemPrompt
-
-                    },
-
-                    {
-
-                        role: "user",
-
-                        content:
-
-                            JSON.stringify({
-
-                                planningContext:
-
-                                    payload.planningContext,
-
-                                validation:
-
-                                    payload.validation,
-
-                                suggestions:
-
-                                    payload.suggestions
-
-                            })
-
-                    }
-
-                ]
+                input: prompt
 
             });
 
         const raw =
-
             completion.output_text ?? "";
 
         let parsed: unknown;
 
         try {
 
-            parsed =
-
-                JSON.parse(raw);
+            parsed = JSON.parse(raw);
 
         }
 
@@ -117,26 +60,19 @@ export class OpenAIProvider
 
             result: parsed,
 
-            provider:
+            provider: this.name,
 
-                this.name,
-
-            model:
-
-                this.model,
+            model: this.model,
 
             usage: {
 
                 promptTokens:
-
                     completion.usage?.input_tokens ?? 0,
 
                 completionTokens:
-
                     completion.usage?.output_tokens ?? 0,
 
                 totalTokens:
-
                     completion.usage?.total_tokens ?? 0
 
             }
