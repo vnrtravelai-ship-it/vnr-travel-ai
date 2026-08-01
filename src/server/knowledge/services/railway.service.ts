@@ -28,19 +28,20 @@ extends BaseService<PlanningRequest, RailwayPlan> {
 
     ): Promise<RailwayPlan> {
 
-        const route =
-            this.repository.findRoute(
+        const train =
+
+            this.repository.findByRoute(
 
                 request.departure,
 
                 request.destination
 
-            );
+            )[0];
 
         return {
 
             trainCode:
-                route?.trainCode ?? "",
+                train?.trainCode ?? "",
 
             departureStation:
                 request.departure,
@@ -49,22 +50,29 @@ extends BaseService<PlanningRequest, RailwayPlan> {
                 request.destination,
 
             departureTime:
-                route?.departureTime ?? "",
+                train?.departureTime ?? "",
 
             arrivalTime:
-                route?.arrivalTime ?? "",
+                train?.arrivalTime ?? "",
 
             seatType:
-                route?.seatType ?? "",
+                train?.seatTypes?.[0] ?? "",
 
             estimatedPrice:
-                route?.estimatedPrice ?? 0,
+                train?.estimatedPrice ?? 0,
 
             duration:
-                route?.duration ?? "",
+                train?.duration ?? "",
 
             distanceKm:
-                route?.distanceKm ?? 0,
+
+                this.repository.getDistance(
+
+                    request.departure,
+
+                    request.destination
+
+                )
 
         };
 

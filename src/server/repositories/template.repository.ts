@@ -1,71 +1,43 @@
-import { buildPlanningSignature } from "../planning/utils/planning-signature";
-import { PlanningRequest } from "../planning/models/planning-request.model";
+import { BaseRepository } from "./base.repository";
 
-import { TemplateLoader } from "../planning/templates/template.loader";
-import { PlanningTemplate } from "../planning/templates/template.types";
+import { PlanningTemplate }
+from "../planning/templates/template.types";
 
-export class TemplateRepository {
+import { planningTemplates }
+from "../planning/templates/template.index";
 
-    private loader =
-    TemplateLoader.getInstance();
+import { PlanningRequest }
+from "../planning/models/planning-request.model";
 
-private templates =
-    this.loader.getTemplates();
+export class TemplateRepository
+extends BaseRepository<PlanningTemplate> {
 
-    getAll(): PlanningTemplate[] {
+    constructor() {
 
-        return this.templates;
+        super(planningTemplates);
 
     }
 
+    /**
+     * Find template by PlanningRequest
+     */
     findByRequest(
         request: PlanningRequest
     ): PlanningTemplate | undefined {
 
-        const signature =
-            buildPlanningSignature(request);
+        return this.findOne(template =>
 
-        return this.templates.find((template) =>
+            template.departure === request.departure &&
 
-            buildPlanningSignature({
+            template.destination === request.destination &&
 
-                departure: template.departure,
+            template.days === request.numberOfDays &&
 
-                destination: template.destination,
+            template.budgetLevel ===
+                (request.budgetLevel ?? "") &&
 
-                numberOfDays: template.days,
-
-                adults: 1,
-
-                children: 0,
-
-                budgetLevel: template.budgetLevel,
-
-                travelStyle: template.travelStyle,
-
-                companion: "",
-
-            }) === signature
-
-        );
-
-    }
-
-    find(
-        departure: string,
-        destination: string,
-        days: number,
-        budgetLevel: string,
-        travelStyle: string
-    ): PlanningTemplate | undefined {
-
-        return this.templates.find((template) =>
-
-            template.departure === departure &&
-            template.destination === destination &&
-            template.days === days &&
-            template.budgetLevel === budgetLevel &&
-            template.travelStyle === travelStyle
+            template.travelStyle ===
+                (request.travelStyle ?? "")
 
         );
 

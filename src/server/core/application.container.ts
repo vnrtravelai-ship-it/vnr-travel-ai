@@ -91,25 +91,17 @@ export class ApplicationContainer {
         // Repositories
         // =====================================
 
-        this.railwayRepository =
-            new RailwayRepository(
-                this.railwayProvider
-            );
+       this.railwayRepository =
+    new RailwayRepository();
 
-        this.hotelRepository =
-            new HotelRepository(
-                this.hotelProvider
-            );
+      this.hotelRepository =
+    new HotelRepository();
 
-        this.foodRepository =
-            new FoodRepository(
-                this.foodProvider
-            );
+this.foodRepository =
+    new FoodRepository();
 
-        this.tourRepository =
-            new TourRepository(
-                this.tourProvider
-            );
+this.tourRepository =
+    new TourRepository();
 
         this.budgetRepository =
     new BudgetRepository();

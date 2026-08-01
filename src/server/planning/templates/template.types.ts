@@ -36,17 +36,12 @@ export interface PlanningTemplate {
     /**
      * Travel style
      */
-    travelStyle: TravelStyle;
+    travelStyle: TravelStyle | string;
 
     /**
-     * Supported locale
+     * JSON template filename
      */
-    locale: string;
-
-    /**
-     * Currency
-     */
-    currency: string;
+    fileName: string;
 
     /**
      * Template version
@@ -64,13 +59,14 @@ export interface PlanningTemplate {
     description: string;
 
     /**
-     * Priority when matching
+     * Optional fields (Sprint 5.x)
      */
-    priority: number;
+    locale?: string;
 
-    /**
-     * Whether template is enabled
-     */
-    enabled: boolean;
+    currency?: string;
+
+    priority?: number;
+
+    enabled?: boolean;
 
 }

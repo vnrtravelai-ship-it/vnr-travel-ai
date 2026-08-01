@@ -1,17 +1,17 @@
-import { FoodProvider }
-from "../providers/food/food.provider";
+import { BaseRepository } from "./base.repository";
 
 import {
     FoodPlan
 } from "../planning/models/planning-context.model";
 
-export class FoodRepository {
+export class FoodRepository
+    extends BaseRepository<FoodPlan> {
 
-    constructor(
+    constructor() {
 
-        private provider: FoodProvider
+        super([]);
 
-    ) { }
+    }
 
     findFood(
 
@@ -19,9 +19,9 @@ export class FoodRepository {
 
     ): FoodPlan | undefined {
 
-        return this.provider.findFood(
+        return this.findOne(
 
-            location
+            () => true
 
         );
 

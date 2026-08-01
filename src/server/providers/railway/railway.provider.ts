@@ -1,58 +1,117 @@
-import fs from "fs";
-import path from "path";
-
-import { BaseProvider } from "../shared/base.provider";
-
 import {
+    RailwayTrain,
     RailwayRoute
-} from "../../repositories/railway.repository";
+} from "../../planning/knowledge/railway.knowledge";
 
-export class RailwayProvider
-    extends BaseProvider<RailwayRoute> {
+import { RailwayRepository }
+    from "../../repositories/railway.repository";
 
-    private routes: RailwayRoute[] = [];
+export class RailwayProvider {
 
-    constructor() {
+    private readonly repository: RailwayRepository;
 
-        super();
+    constructor(
+        repository?: RailwayRepository
+    ) {
 
-        const filePath =
-            path.join(
-                process.cwd(),
-                "src/server/planning/data/railway-data.json"
-            );
-
-        const json =
-            fs.readFileSync(
-                filePath,
-                "utf8"
-            );
-
-        this.routes =
-            JSON.parse(json);
+        this.repository =
+            repository ?? new RailwayRepository();
 
     }
 
-    async load(): Promise<RailwayRoute[]> {
+    /**
+     * Danh sách toàn bộ tàu
+     */
+    getAllTrains(): RailwayTrain[] {
 
-        return this.routes;
+        return this.repository.findAllTrains();
 
     }
 
-    findRoute(
+    /**
+     * Tìm theo mã tàu
+     */
+    getTrainByCode(
+        trainCode: string
+    ): RailwayTrain | undefined {
 
+        return this.repository.findByTrainCode(
+            trainCode
+        );
+
+    }
+
+    /**
+     * Tìm tàu theo tuyến
+     */
+    getTrainByRoute(
         departure: string,
+        destination: string
+    ): RailwayTrain | undefined {
 
-        arrival: string
+        return this.repository.findByRoute(
+            departure,
+            destination
+        );
 
+    }
+
+    /**
+     * Backward compatibility
+     */
+    getRoute(
+        departure: string,
+        destination: string
+    ): RailwayTrain | undefined {
+
+        return this.repository.findRoute(
+            departure,
+            destination
+        );
+
+    }
+
+    /**
+     * Thông tin tuyến
+     */
+    getRouteInfo(
+        departure: string,
+        destination: string
     ): RailwayRoute | undefined {
 
-        return this.routes.find(route =>
+        return this.repository.findRouteInfo(
+            departure,
+            destination
+        );
 
-            route.departure === departure &&
+    }
 
-            route.arrival === arrival
+    /**
+     * Kiểm tra tuyến
+     */
+    hasRoute(
+        departure: string,
+        destination: string
+    ): boolean {
 
+        return this.repository.hasRoute(
+            departure,
+            destination
+        );
+
+    }
+
+    /**
+     * Khoảng cách tuyến
+     */
+    getDistance(
+        departure: string,
+        destination: string
+    ): number {
+
+        return this.repository.getDistance(
+            departure,
+            destination
         );
 
     }

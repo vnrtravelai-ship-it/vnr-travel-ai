@@ -1,9 +1,15 @@
-import { PlanningRequest } from "../models/planning-request.model";
-import { RailwayPlan } from "../models/planning-context.model";
+import { PlanningRequest }
+from "../models/planning-request.model";
+
+import {
+    RailwayPlan
+}
+from "../models/planning-context.model";
 
 import {
     RailwayRepository
-} from "../../repositories/railway.repository";
+}
+from "../../repositories/railway.repository";
 
 export class RailwayPlanner {
 
@@ -14,10 +20,13 @@ export class RailwayPlanner {
     ) {}
 
     async plan(
+
         request: PlanningRequest
+
     ): Promise<RailwayPlan> {
 
-        const route =
+        const train =
+
             this.repository.findRoute(
 
                 request.departure,
@@ -29,7 +38,7 @@ export class RailwayPlanner {
         return {
 
             trainCode:
-                route?.trainCode ?? "",
+                train?.trainCode ?? "",
 
             departureStation:
                 request.departure,
@@ -38,22 +47,29 @@ export class RailwayPlanner {
                 request.destination,
 
             departureTime:
-                route?.departureTime ?? "",
+                train?.departureTime ?? "",
 
             arrivalTime:
-                route?.arrivalTime ?? "",
+                train?.arrivalTime ?? "",
 
             seatType:
-                route?.seatType ?? "",
+                train?.seatTypes?.[0] ?? "",
 
             estimatedPrice:
-                route?.estimatedPrice ?? 0,
+                train?.estimatedPrice ?? 0,
 
             duration:
-                route?.duration ?? "",
+                train?.duration ?? "",
 
             distanceKm:
-                route?.distanceKm ?? 0,
+
+                this.repository.getDistance(
+
+                    request.departure,
+
+                    request.destination
+
+                )
 
         };
 

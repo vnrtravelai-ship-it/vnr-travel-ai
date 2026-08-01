@@ -1,17 +1,17 @@
-import { HotelProvider }
-from "../providers/hotel/hotel.provider";
+import { BaseRepository } from "./base.repository";
 
 import {
     HotelSummary
 } from "../planning/models/planning-context.model";
 
-export class HotelRepository {
+export class HotelRepository
+    extends BaseRepository<HotelSummary> {
 
-    constructor(
+    constructor() {
 
-        private provider: HotelProvider
+        super([]);
 
-    ) { }
+    }
 
     findHotels(
 
@@ -19,9 +19,27 @@ export class HotelRepository {
 
     ): HotelSummary[] {
 
-        return this.provider.findHotels(
+        return this.findMany(
 
-            location
+            hotel =>
+
+                hotel.address.includes(location)
+
+        );
+
+    }
+
+    findById(
+
+        id: string
+
+    ): HotelSummary | undefined {
+
+        return this.findOne(
+
+            hotel =>
+
+                hotel.id === id
 
         );
 

@@ -1,50 +1,163 @@
+import { BaseRepository } from "./base.repository";
+
 import {
-    RailwayProvider
-} from "../providers/railway/railway.provider";
+    RailwayTrain,
+    RailwayRoute,
+    railwayTrains,
+    railwayRoutes
+} from "../planning/knowledge/railway.knowledge";
 
-export interface RailwayRoute {
+export class RailwayRepository
+    extends BaseRepository<RailwayTrain> {
 
-    departure: string;
+    /**
+     * Danh sách tuyến đường
+     */
+    private readonly routes: RailwayRoute[];
 
-    arrival: string;
+    constructor() {
 
-    distanceKm: number;
+        super(railwayTrains);
 
-    duration: string;
+        this.routes = railwayRoutes;
 
-    seatType: string;
+    }
 
-    estimatedPrice: number;
+    /**
+     * Lấy toàn bộ đoàn tàu
+     */
+    findAllTrains(): RailwayTrain[] {
 
-    trainCode: string;
+        return this.findAll();
 
-    departureTime: string;
+    }
 
-    arrivalTime: string;
+    /**
+     * Tìm theo mã tàu
+     */
+    findByTrainCode(
+        trainCode: string
+    ): RailwayTrain | undefined {
+
+        return this.findOne(
+
+            train =>
+
+                train.trainCode === trainCode
+
+        );
+
+    }
+
+    /**
+     * Tìm tất cả tàu theo tuyến
+     */
+    findByRoute(
+
+    departure: string,
+
+    destination: string
+
+): RailwayTrain | undefined {
+
+    return this.findOne(
+
+        train =>
+
+            train.departure === departure &&
+
+            train.destination === destination
+
+    );
 
 }
 
-export class RailwayRepository {
-
-    constructor(
-
-        private provider: RailwayProvider
-
-    ) { }
-
+    /**
+     * Backward compatibility
+     * RailwayService hiện đang gọi findRoute()
+     */
     findRoute(
+
+    departure: string,
+
+    destination: string
+
+): RailwayTrain | undefined {
+
+    return this.findByRoute(
+
+        departure,
+
+        destination
+
+    );
+
+}
+
+    /**
+     * Lấy thông tin tuyến
+     */
+    findRouteInfo(
 
         departure: string,
 
-        arrival: string
+        destination: string
 
     ): RailwayRoute | undefined {
 
-        return this.provider.findRoute(
+        return this.routes.find(
+
+            route =>
+
+                route.departure === departure &&
+
+                route.destination === destination
+
+        );
+
+    }
+
+    /**
+     * Có tuyến hay không
+     */
+    hasRoute(
+
+        departure: string,
+
+        destination: string
+
+    ): boolean {
+
+        return this.findRouteInfo(
 
             departure,
 
-            arrival
+            destination
+
+        ) !== undefined;
+
+    }
+
+    /**
+     * Khoảng cách tuyến
+     */
+    getDistance(
+
+        departure: string,
+
+        destination: string
+
+    ): number {
+
+        return (
+
+            this.findRouteInfo(
+
+                departure,
+
+                destination
+
+            )?.distanceKm ?? 0
 
         );
 

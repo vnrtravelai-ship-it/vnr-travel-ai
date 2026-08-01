@@ -1,18 +1,17 @@
-import { TourProvider }
-from "../providers/tour/tour.provider";
+import { BaseRepository } from "./base.repository";
 
 import {
     TourPlan
-}
-from "../planning/models/planning-context.model";
+} from "../planning/models/planning-context.model";
 
-export class TourRepository {
+export class TourRepository
+    extends BaseRepository<TourPlan> {
 
-    constructor(
+    constructor() {
 
-        private provider: TourProvider
+        super([]);
 
-    ) {}
+    }
 
     findByCity(
 
@@ -20,9 +19,43 @@ export class TourRepository {
 
     ): TourPlan[] {
 
-        return this.provider.findByCity(
+        return this.findMany(
 
-            city
+            tour =>
+
+                tour.city === city
+
+        );
+
+    }
+
+    findByCategory(
+
+        category: string
+
+    ): TourPlan[] {
+
+        return this.findMany(
+
+            tour =>
+
+                tour.category === category
+
+        );
+
+    }
+
+    findById(
+
+        id: string
+
+    ): TourPlan | undefined {
+
+        return this.findOne(
+
+            tour =>
+
+                tour.id === id
 
         );
 
