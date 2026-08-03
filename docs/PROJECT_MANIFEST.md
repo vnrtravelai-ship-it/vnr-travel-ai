@@ -1586,3 +1586,19 @@ ACTIVE
 This document defines the permanent development constitution of VNR Travel AI.
 
 Every contributor, AI assistant, reviewer, and maintainer is required to comply with this Manifest before modifying the project.
+
+Architecture Status
+
+Completed
+✔ Datasource
+✔ Repository
+✔ Provider
+✔ Template Matching
+✔ Dependency Injection
+✔ Service Layer
+
+Pending
+- DayPlan
+- Rich Planning Template
+- Hybrid Planning
+- AI Recommendation
