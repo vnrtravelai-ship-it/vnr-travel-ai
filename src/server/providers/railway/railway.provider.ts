@@ -3,53 +3,49 @@ import {
     RailwayRoute
 } from "../../planning/knowledge/railway.knowledge";
 
-import { RailwayRepository }
-    from "../../repositories/railway.repository";
+import {
+    RailwayDataSource
+}
+from "../../datasources/railway.datasource";
 
 export class RailwayProvider {
 
-    private readonly repository: RailwayRepository;
+    private readonly datasource =
+        RailwayDataSource.getInstance();
 
-    constructor(
-        repository?: RailwayRepository
-    ) {
-
-        this.repository =
-            repository ?? new RailwayRepository();
-
-    }
+    constructor() {}
 
     /**
-     * Danh sách toàn bộ tàu
+     * Danh sách toàn bộ tàu.
      */
     getAllTrains(): RailwayTrain[] {
 
-        return this.repository.findAllTrains();
+        return this.datasource.getAllTrains();
 
     }
 
     /**
-     * Tìm theo mã tàu
+     * Tìm theo mã tàu.
      */
     getTrainByCode(
         trainCode: string
     ): RailwayTrain | undefined {
 
-        return this.repository.findByTrainCode(
+        return this.datasource.findTrainByCode(
             trainCode
         );
 
     }
 
     /**
-     * Tìm tàu theo tuyến
+     * Tìm tàu theo tuyến.
      */
     getTrainByRoute(
         departure: string,
         destination: string
     ): RailwayTrain | undefined {
 
-        return this.repository.findByRoute(
+        return this.datasource.findTrainByRoute(
             departure,
             destination
         );
@@ -57,14 +53,14 @@ export class RailwayProvider {
     }
 
     /**
-     * Backward compatibility
+     * Backward compatibility.
      */
     getRoute(
         departure: string,
         destination: string
     ): RailwayTrain | undefined {
 
-        return this.repository.findRoute(
+        return this.getTrainByRoute(
             departure,
             destination
         );
@@ -72,14 +68,14 @@ export class RailwayProvider {
     }
 
     /**
-     * Thông tin tuyến
+     * Thông tin tuyến.
      */
     getRouteInfo(
         departure: string,
         destination: string
     ): RailwayRoute | undefined {
 
-        return this.repository.findRouteInfo(
+        return this.datasource.findRoute(
             departure,
             destination
         );
@@ -87,32 +83,32 @@ export class RailwayProvider {
     }
 
     /**
-     * Kiểm tra tuyến
+     * Kiểm tra tuyến.
      */
     hasRoute(
         departure: string,
         destination: string
     ): boolean {
 
-        return this.repository.hasRoute(
+        return this.getRouteInfo(
             departure,
             destination
-        );
+        ) !== undefined;
 
     }
 
     /**
-     * Khoảng cách tuyến
+     * Khoảng cách tuyến.
      */
     getDistance(
         departure: string,
         destination: string
     ): number {
 
-        return this.repository.getDistance(
+        return this.getRouteInfo(
             departure,
             destination
-        );
+        )?.distanceKm ?? 0;
 
     }
 

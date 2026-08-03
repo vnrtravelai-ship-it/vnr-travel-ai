@@ -1,6 +1,3 @@
-import fs from "fs";
-import path from "path";
-
 import { BaseProvider }
 from "../shared/base.provider";
 
@@ -9,63 +6,57 @@ import {
 }
 from "../../planning/models/planning-context.model";
 
+import {
+    FoodDataSource
+}
+from "../../datasources/food.datasource";
+
 export class FoodProvider
 extends BaseProvider<FoodPlan> {
 
-    private foods: FoodPlan[] = [];
+    private readonly datasource =
+        FoodDataSource.getInstance();
 
     constructor() {
 
         super();
 
-        const filePath =
-            path.join(
-
-                process.cwd(),
-
-                "src/server/planning/data/foods.json"
-
-            );
-
-        const json =
-            fs.readFileSync(
-
-                filePath,
-
-                "utf8"
-
-            );
-
-        this.foods =
-            JSON.parse(json);
-
     }
 
+    /**
+     * Trả toàn bộ dữ liệu.
+     */
     async load(): Promise<FoodPlan[]> {
 
-        return this.foods;
+        return this.datasource.getAll();
 
     }
 
+    /**
+     * Tìm dữ liệu ẩm thực theo địa điểm.
+     */
     findFood(
-
         location: string
-
     ): FoodPlan | undefined {
 
-        return this.foods.find(food =>
+        const keyword =
+            location
+                .trim()
+                .toLowerCase();
 
-            food.specialties.some(item =>
+        return this.datasource
+            .getAll()
+            .find(food =>
 
-                item.toLowerCase().includes(
+                (food.specialties ?? []).some(item =>
 
-                    location.toLowerCase()
+                    item
+                        .toLowerCase()
+                        .includes(keyword)
 
                 )
 
-            )
-
-        );
+            );
 
     }
 

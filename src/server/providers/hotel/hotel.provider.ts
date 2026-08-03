@@ -1,6 +1,3 @@
-import fs from "fs";
-import path from "path";
-
 import { BaseProvider }
 from "../shared/base.provider";
 
@@ -8,61 +5,55 @@ import {
     HotelSummary
 } from "../../planning/models/planning-context.model";
 
+import {
+    HotelDataSource
+}
+from "../../datasources/hotel.datasource";
+
 export class HotelProvider
 extends BaseProvider<HotelSummary> {
 
-    private hotels: HotelSummary[] = [];
+    private readonly datasource =
+        HotelDataSource.getInstance();
 
     constructor() {
 
         super();
 
-        const filePath =
-            path.join(
-
-                process.cwd(),
-
-                "src/server/planning/data/hotels.json"
-
-            );
-
-        const json =
-            fs.readFileSync(
-
-                filePath,
-
-                "utf8"
-
-            );
-
-        this.hotels =
-            JSON.parse(json);
-
     }
 
+    /**
+     * Load toàn bộ khách sạn.
+     */
     async load(): Promise<HotelSummary[]> {
 
-        return this.hotels;
+        return this.datasource.getAll();
 
     }
 
+    /**
+     * Tìm khách sạn theo địa điểm.
+     */
     findHotels(
-
         location: string
-
     ): HotelSummary[] {
 
-        return this.hotels.filter(hotel =>
+        const keyword =
+            location
+                .trim()
+                .toLowerCase();
 
-            hotel.address
-                .toLowerCase()
-                .includes(
+        return this.datasource
+            .getAll()
+            .filter(
 
-                    location.toLowerCase()
+                hotel =>
 
-                )
+                    hotel.address
+                        ?.toLowerCase()
+                        .includes(keyword)
 
-        );
+            );
 
     }
 

@@ -1,6 +1,3 @@
-import fs from "fs";
-import path from "path";
-
 import { BaseProvider }
 from "../shared/base.provider";
 
@@ -9,59 +6,54 @@ import {
 }
 from "../../planning/models/planning-context.model";
 
+import {
+    TourDataSource
+}
+from "../../datasources/tour.datasource";
+
 export class TourProvider
 extends BaseProvider<TourPlan> {
 
-    private tours: TourPlan[] = [];
+    private readonly datasource =
+        TourDataSource.getInstance();
 
     constructor() {
 
         super();
 
-        const filePath =
-            path.join(
-
-                process.cwd(),
-
-                "src/server/planning/data/tours.json"
-
-            );
-
-        const json =
-            fs.readFileSync(
-
-                filePath,
-
-                "utf8"
-
-            );
-
-        this.tours =
-            JSON.parse(json);
-
     }
 
+    /**
+     * Trả toàn bộ dữ liệu.
+     */
     async load(): Promise<TourPlan[]> {
 
-        return this.tours;
+        return this.datasource.getAll();
 
     }
 
+    /**
+     * Tìm tour theo thành phố.
+     */
     findByCity(
-
         city: string
-
     ): TourPlan[] {
 
-        return this.tours.filter(
+        const keyword =
+            city
+                .trim()
+                .toLowerCase();
 
-            tour =>
+        return this.datasource
+            .getAll()
+            .filter(
 
-                tour.city.toLowerCase() ===
+                tour =>
 
-                city.toLowerCase()
+                    tour.city
+                        ?.toLowerCase() === keyword
 
-        );
+            );
 
     }
 
