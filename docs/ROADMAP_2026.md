@@ -1821,3 +1821,20 @@ Production Release
 The project must always progress forward along this roadmap.
 
 End of Document.
+
+Sprint 5.5A
+- Thiết kế DayPlan
+- Hoàn thiện Itinerary Layer
+- Chuẩn hóa ItineraryBuilder
+
+Sprint 5.5B
+- Rich Planning Template
+- Mở rộng PlanningTemplate từ metadata thành template đầy đủ
+
+Sprint 5.6
+- HybridPlanningService
+- Hybrid Planning Engine
+
+Sprint 5.7
+- AI Enhancement
+- Recommendation Layer

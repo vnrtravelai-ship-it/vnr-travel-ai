@@ -13,9 +13,14 @@ import { TourProvider } from "../providers/tour/tour.provider";
 import { BudgetProvider } from "../providers/budget/budget.provider";
 import { AffiliateProvider } from "../providers/affiliate/affiliate.provider";
 
-import { PlanningCacheManager } from "../cache/managers/planning-cache.manager";
+import { TemplateMatchingService }
+from "../services/template-matching.service";
 
-import { KnowledgeRepository } from "../knowledge/knowledge.repository";
+import { PlanningCacheManager }
+from "../cache/managers/planning-cache.manager";
+
+import { KnowledgeRepository }
+from "../knowledge/knowledge.repository";
 
 export class ApplicationContainer {
 
@@ -56,6 +61,13 @@ export class ApplicationContainer {
     readonly templateRepository: TemplateRepository;
 
     // =====================================
+    // Planning Services
+    // =====================================
+
+    readonly templateMatchingService:
+        TemplateMatchingService;
+
+    // =====================================
     // Infrastructure
     // =====================================
 
@@ -91,26 +103,37 @@ export class ApplicationContainer {
         // Repositories
         // =====================================
 
-       this.railwayRepository =
-    new RailwayRepository();
+        this.railwayRepository =
+            new RailwayRepository();
 
-      this.hotelRepository =
-    new HotelRepository();
+        this.hotelRepository =
+            new HotelRepository();
 
-this.foodRepository =
-    new FoodRepository();
+        this.foodRepository =
+            new FoodRepository();
 
-this.tourRepository =
-    new TourRepository();
+        this.tourRepository =
+            new TourRepository();
 
         this.budgetRepository =
-    new BudgetRepository();
+            new BudgetRepository();
 
-       this.affiliateRepository =
-    new AffiliateRepository();
+        this.affiliateRepository =
+            new AffiliateRepository();
 
         this.templateRepository =
             new TemplateRepository();
+
+        // =====================================
+        // Planning Services
+        // =====================================
+
+        this.templateMatchingService =
+            new TemplateMatchingService(
+
+                this.templateRepository
+
+            );
 
         // =====================================
         // Infrastructure

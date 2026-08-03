@@ -3,18 +3,24 @@ import { BaseRepository } from "./base.repository";
 import { PlanningTemplate }
 from "../planning/templates/template.types";
 
-import { planningTemplates }
-from "../planning/templates/template.index";
-
 import { PlanningRequest }
 from "../planning/models/planning-request.model";
+
+import { TemplateDataSource }
+from "../datasources/template.datasource";
 
 export class TemplateRepository
 extends BaseRepository<PlanningTemplate> {
 
     constructor() {
 
-        super(planningTemplates);
+        super(
+
+            TemplateDataSource
+                .getInstance()
+                .getAll()
+
+        );
 
     }
 
@@ -25,19 +31,21 @@ extends BaseRepository<PlanningTemplate> {
         request: PlanningRequest
     ): PlanningTemplate | undefined {
 
-        return this.findOne(template =>
+        return this.findOne(
 
-            template.departure === request.departure &&
+            template =>
 
-            template.destination === request.destination &&
+                template.departure === request.departure &&
 
-            template.days === request.numberOfDays &&
+                template.destination === request.destination &&
 
-            template.budgetLevel ===
-                (request.budgetLevel ?? "") &&
+                template.days === request.numberOfDays &&
 
-            template.travelStyle ===
-                (request.travelStyle ?? "")
+                template.budgetLevel ===
+                    (request.budgetLevel ?? "") &&
+
+                template.travelStyle ===
+                    (request.travelStyle ?? "")
 
         );
 

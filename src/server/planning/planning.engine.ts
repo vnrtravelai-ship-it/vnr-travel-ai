@@ -41,9 +41,9 @@ export class PlanningEngine {
         // =====================================
 
         const template =
-            this.container
-                .templateRepository
-                .findByRequest(request);
+    this.container
+        .templateMatchingService
+        .match(request);
 
         if (template) {
 
