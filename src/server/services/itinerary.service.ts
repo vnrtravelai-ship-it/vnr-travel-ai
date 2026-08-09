@@ -3,52 +3,83 @@ import { buildItineraryPrompt } from "./itinerary.prompt";
 import { itinerarySystemInstruction } from "./itinerary.system";
 import { itinerarySchema } from "./itinerary.schema";
 import { PlanningEngine } from "../planning/planning.engine";
+
 const planningEngine = new PlanningEngine();
+
 export interface ItineraryRequest {
-  departure: string;
-  arrival: string;
-  daysCount?: number;
-  budgetLevel?: string;
-  travelStyle?: string;
-  companion?: string;
+    departure: string;
+    arrival: string;
+    daysCount?: number;
+    budgetLevel?: string;
+    travelStyle?: string;
+    companion?: string;
 }
 
 export async function generateItinerary(
-  request: ItineraryRequest
+    request: ItineraryRequest
 ) {
-  const planningContext =
-  await planningEngine.buildContext({
-    departure: request.departure,
-    destination: request.arrival,
+    const planningContext =
+        await planningEngine.buildContext({
+            departure:
+                request.departure,
 
-    numberOfDays: request.daysCount ?? 3,
+            destination:
+                request.arrival,
 
-    adults: 1,
+            numberOfDays:
+                request.daysCount ?? 3,
 
-    children: 0,
+            adults:
+                1,
 
-    budgetLevel: request.budgetLevel,
+            children:
+                0,
 
-    travelStyle: request.travelStyle,
+            budgetLevel:
+                request.budgetLevel,
 
-    companion: request.companion,
-  });
+            travelStyle:
+                request.travelStyle,
 
-  console.log(planningContext);
+            companion:
+                request.companion
+        });
 
-  const ai = getAiClient();
+    console.log(
+        planningContext
+    );
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
+    const ai =
+        getAiClient();
 
-    contents: buildItineraryPrompt(request),
+    const response =
+        await ai.models.generateContent({
 
-    config: {
-      systemInstruction: itinerarySystemInstruction,
-      responseMimeType: "application/json",
-      responseSchema: itinerarySchema,
-    },
-  });
+            model:
+                "gemini-2.5-flash",
 
-  return JSON.parse(response.text || "{}");
+            contents:
+                buildItineraryPrompt(
+                    request,
+                    planningContext
+                ),
+
+            config: {
+
+                systemInstruction:
+                    itinerarySystemInstruction,
+
+                responseMimeType:
+                    "application/json",
+
+                responseSchema:
+                    itinerarySchema
+
+            }
+
+        });
+
+    return JSON.parse(
+        response.text || "{}"
+    );
 }

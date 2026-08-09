@@ -1,4 +1,5 @@
-import { ScheduleSlot } from "../models/schedule-slot.model";
+import { ScheduleSlot }
+from "../models/schedule-slot.model";
 
 export class DistanceRule {
 
@@ -6,72 +7,37 @@ export class DistanceRule {
         schedule: ScheduleSlot[]
     ): ScheduleSlot[] {
 
-        const fixed =
-            schedule.filter(
-                x => x.locked
+        if (schedule.length <= 1) {
+            return [...schedule];
+        }
+
+        const result =
+            [...schedule].sort(
+                (a, b) => {
+
+                    const timeComparison =
+                        a.startTime.localeCompare(
+                            b.startTime
+                        );
+
+                    if (timeComparison !== 0) {
+                        return timeComparison;
+                    }
+
+                    if (a.locked !== b.locked) {
+                        return a.locked ? -1 : 1;
+                    }
+
+                    return a.order - b.order;
+                }
             );
 
-        const movable =
-            schedule.filter(
-                x => !x.locked
-            );
-
-        movable.sort((a, b) => {
-
-            // =====================================
-            // 1. Latitude
-            // =====================================
-
-            if (
-                a.latitude !== undefined &&
-                b.latitude !== undefined &&
-                a.latitude !== b.latitude
-            ) {
-
-                return a.latitude - b.latitude;
-
+        result.forEach(
+            (slot, index) => {
+                slot.order = index + 1;
             }
-
-            // =====================================
-            // 2. Longitude
-            // =====================================
-
-            if (
-                a.longitude !== undefined &&
-                b.longitude !== undefined &&
-                a.longitude !== b.longitude
-            ) {
-
-                return a.longitude - b.longitude;
-
-            }
-
-            // =====================================
-            // 3. Start Time
-            // =====================================
-
-            return a.startTime.localeCompare(
-                b.startTime
-            );
-
-        });
-
-        const result = [
-
-            ...fixed,
-
-            ...movable
-
-        ];
-
-        result.forEach((item, index) => {
-
-            item.order = index + 1;
-
-        });
+        );
 
         return result;
-
     }
-
 }

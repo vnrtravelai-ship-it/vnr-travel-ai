@@ -4,61 +4,57 @@ import {
     TourPlan
 } from "../planning/models/planning-context.model";
 
+import {
+    TourDataSource
+} from "../datasources/tour.datasource";
+
 export class TourRepository
-    extends BaseRepository<TourPlan> {
+extends BaseRepository<TourPlan> {
+
+    private readonly datasource: TourDataSource;
 
     constructor() {
 
-        super([]);
+        const datasource =
+            TourDataSource.getInstance();
 
+        super(
+            datasource.getAll()
+        );
+
+        this.datasource = datasource;
+    }
+
+    findAllTours(): TourPlan[] {
+
+        return this.findAll();
     }
 
     findByCity(
-
         city: string
-
     ): TourPlan[] {
 
-        return this.findMany(
-
-            tour =>
-
-                tour.city === city
-
+        return this.datasource.findByCity(
+            city
         );
-
     }
 
     findByCategory(
-
         category: string
-
     ): TourPlan[] {
 
-        return this.findMany(
-
-            tour =>
-
-                tour.category === category
-
+        return this.datasource.findByCategory(
+            category
         );
-
     }
 
     findById(
-
         id: string
-
     ): TourPlan | undefined {
 
-        return this.findOne(
-
-            tour =>
-
-                tour.id === id
-
+        return this.datasource.findById(
+            id
         );
-
     }
 
 }

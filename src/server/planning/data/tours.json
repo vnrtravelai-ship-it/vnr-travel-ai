@@ -42,5 +42,84 @@
       "văn hóa",
       "lịch sử"
     ]
+  },
+  {
+    "id": "poi-hue-001",
+    "city": "Huế",
+    "name": "Đại Nội Huế",
+    "category": "Heritage",
+    "duration": "3 giờ",
+    "estimatedPrice": 0,
+    "address": "Phú Hậu, Huế",
+    "openingHours": "07:00-17:30",
+    "tags": [
+      "di sản",
+      "lịch sử",
+      "văn hóa",
+      "gia đình"
+    ]
+  },
+  {
+    "id": "poi-hue-002",
+    "city": "Huế",
+    "name": "Chùa Thiên Mụ",
+    "category": "Cultural",
+    "duration": "1 giờ 30 phút",
+    "estimatedPrice": 0,
+    "address": "Kim Long, Huế",
+    "openingHours": "08:00-18:00",
+    "tags": [
+      "tâm linh",
+      "văn hóa",
+      "checkin"
+    ]
+  },
+  {
+    "id": "poi-hue-003",
+    "city": "Huế",
+    "name": "Lăng Khải Định",
+    "category": "Heritage",
+    "duration": "2 giờ",
+    "estimatedPrice": 0,
+    "address": "Thủy Bằng, Huế",
+    "openingHours": "07:00-17:00",
+    "tags": [
+      "di sản",
+      "lịch sử",
+      "kiến trúc",
+      "checkin"
+    ]
+  },
+  {
+    "id": "poi-hue-004",
+    "city": "Huế",
+    "name": "Lăng Minh Mạng",
+    "category": "Heritage",
+    "duration": "2 giờ",
+    "estimatedPrice": 0,
+    "address": "Hương Thọ, Huế",
+    "openingHours": "07:00-17:30",
+    "tags": [
+      "di sản",
+      "lịch sử",
+      "kiến trúc",
+      "thiên nhiên"
+    ]
+  },
+  {
+    "id": "poi-hue-005",
+    "city": "Huế",
+    "name": "Chợ Đông Ba",
+    "category": "Market",
+    "duration": "2 giờ",
+    "estimatedPrice": 0,
+    "address": "Trần Hưng Đạo, Huế",
+    "openingHours": "07:00-19:00",
+    "tags": [
+      "ẩm thực",
+      "mua sắm",
+      "địa phương",
+      "checkin"
+    ]
   }
 ]

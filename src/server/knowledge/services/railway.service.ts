@@ -13,30 +13,20 @@ export class RailwayService
 extends BaseService<PlanningRequest, RailwayPlan> {
 
     constructor(
-
         private repository: RailwayRepository
-
     ) {
-
         super();
-
     }
 
     async plan(
-
         request: PlanningRequest
-
     ): Promise<RailwayPlan> {
 
         const train =
-
             this.repository.findByRoute(
-
                 request.departure,
-
                 request.destination
-
-            )[0];
+            );
 
         return {
 
@@ -65,13 +55,9 @@ extends BaseService<PlanningRequest, RailwayPlan> {
                 train?.duration ?? "",
 
             distanceKm:
-
                 this.repository.getDistance(
-
                     request.departure,
-
                     request.destination
-
                 )
 
         };

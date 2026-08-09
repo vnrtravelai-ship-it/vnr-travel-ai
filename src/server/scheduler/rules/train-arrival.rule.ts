@@ -7,38 +7,39 @@ from "../models/schedule-slot.model";
 export class TrainArrivalRule {
 
     apply(
-
         context: PlanningContext,
-
         schedule: ScheduleSlot[]
-
     ): ScheduleSlot[] {
 
         if (!context.railway) {
-
             return schedule;
-
         }
 
         const railway =
             context.railway;
 
         const arrivalTime =
-            railway.arrivalTime;
+            railway.arrivalTime?.trim();
+
+        if (!arrivalTime) {
+            return schedule;
+        }
 
         schedule.push({
 
-            id: "train-arrival",
+            id:
+                "train-arrival",
 
-            day: 1,
+            day:
+                1,
 
-            type: "TRAIN",
+            type:
+                "TRAIN",
 
             title:
                 `Đến ga ${railway.arrivalStation}`,
 
             description:
-
                 `${railway.trainCode}: ${railway.departureStation} → ${railway.arrivalStation}`,
 
             startTime:
@@ -47,7 +48,8 @@ export class TrainArrivalRule {
             endTime:
                 arrivalTime,
 
-            durationMinutes: 0,
+            durationMinutes:
+                0,
 
             location:
                 railway.arrivalStation,
@@ -55,9 +57,11 @@ export class TrainArrivalRule {
             estimatedCost:
                 railway.estimatedPrice,
 
-            order: 1,
+            order:
+                1,
 
-            locked: true,
+            locked:
+                true,
 
             metadata: {
 
@@ -90,7 +94,5 @@ export class TrainArrivalRule {
         });
 
         return schedule;
-
     }
-
 }
